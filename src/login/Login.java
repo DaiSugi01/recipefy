@@ -16,6 +16,14 @@ import dbutil.DbHandler;
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	public void service(HttpServletRequest request, HttpServletResponse response) {
+		int i = Integer.parseInt(request.getParameter("email"));
+		int j = Integer.parseInt(request.getParameter("password"));
+		
+		int k = i + j;
+		System.out.println("Result is " + k);
+	}
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
