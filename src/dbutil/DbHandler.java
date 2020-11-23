@@ -7,7 +7,7 @@ public class DbHandler {
 	
 	private final String URL = "jdbc:mysql://localhost/recipe";
 	private final String USER = "root";
-	private final String PASSWORD = "zhpv3925";
+	private final String PASSWORD = "";
 	Connection conn = null;
 	
 	private static DbHandler handler = null;
@@ -22,7 +22,7 @@ public class DbHandler {
 		}
 		return handler;
 	}
-	
+
 	private void getConnection() {
 		try {
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);

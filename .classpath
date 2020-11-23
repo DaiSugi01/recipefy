@@ -7,7 +7,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/ayumitanaka/Downloads/Cornerstone/SQL/week1/d3/ConnectionToSql/libs/mysql-connector-java-8.0.20.jar">
+	<classpathentry kind="lib" path="/Users/sugiharadaiki/projects/java/libs/mysql-connector-java-8.0.20.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
