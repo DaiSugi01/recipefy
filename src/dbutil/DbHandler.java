@@ -22,7 +22,7 @@ public class DbHandler {
 	
 	private void getConnection() {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			Class.forName(DBConfig.DRIVER);
 			conn = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
 			System.out.println("Connected!");
 		} catch (Exception e) {
