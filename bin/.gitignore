@@ -1,0 +1,6 @@
+# production
+/build
+.classpath
+.project
+.settings
+
