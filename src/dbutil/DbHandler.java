@@ -5,9 +5,6 @@ import java.sql.DriverManager;
 
 public class DbHandler {
 	
-	private final String URL = "jdbc:mysql://localhost/recipe";
-	private final String USER = "root";
-	private final String PASSWORD = "";
 	Connection conn = null;
 	
 	private static DbHandler handler = null;
@@ -22,10 +19,11 @@ public class DbHandler {
 		}
 		return handler;
 	}
-
+	
 	private void getConnection() {
 		try {
-			conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
 			System.out.println("Connected!");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
