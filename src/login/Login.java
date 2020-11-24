@@ -67,9 +67,7 @@ public class Login extends HttpServlet {
 			// go to error
 			RequestDispatcher rd = request.getRequestDispatcher("/login-error.html");
 			rd.forward(request, response);
-		};
-		
-		
+		};		
 	}
 
 	/**
