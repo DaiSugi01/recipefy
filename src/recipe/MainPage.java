@@ -53,30 +53,10 @@ public class MainPage extends HttpServlet {
 		for (String string : recipes) {
 			System.out.println(string);
 		}
-		String a = "aaa";
-		request.setAttribute("a", a);
+
 		request.setAttribute("recipes", recipes);
 		RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
 		rd.forward(request, response);
-		
-		
-		
-		
-		
-		
-		
-		
-//		RequestDispatcher rd = request.getRequestDispatcher("");
-//		request.setAttribute("recipes", recipes);
-//		getServletConfig().getServletContext().getRequestDispatcher("/index.jsp").forward(request,response);
-//		rd.forward(request, response);
-//		response.sendRedirect("recipeList");
-//		response.sendRedirect("index.jsp");
-		
-//		RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
-//		rd.forward(request, response);
-		
-		
 	}
 
 	/**
