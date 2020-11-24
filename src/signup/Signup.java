@@ -1,4 +1,4 @@
-package login;
+package signup;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -6,23 +6,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dbutil.DbHandler;
 import user.UserDao;
-import user.UserDto;
 
 /**
- * Servlet implementation class Login2
+ * Servlet implementation class Signup
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/Signup")
+public class Signup extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Signup() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,29 +35,19 @@ public class Login extends HttpServlet {
 		
 		System.out.println("Success!");
 		
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 	
+		System.out.println(firstName);
+		System.out.println(lastName);
 		System.out.println(email);
 		System.out.println(password);
+		
 		UserDao user = new UserDao(handler.getConnection());
 		
-		if (user.checkCredentials(email, password)) {
-			
-			// DaoでDabaseにアクセス
-			// DaoでSQL実行 -> Dtoに結果を保存
-			UserDto userDto = user.selectUser(email, password);
-
-			HttpSession session = request.getSession();
-			session.setAttribute("user", userDto);
-			
-			UserDto userDto1 = (UserDto)session.getAttribute("user");
-			
-		} else {
-			// go to error
-		};
-		
-		
+		System.out.println(user.insertUser(firstName, lastName, email, password));
 		
 	}
 

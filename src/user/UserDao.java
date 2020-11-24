@@ -1,41 +1,17 @@
-package dbutil;
+package user;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class DbHandler {
-	
-	Connection conn = null;
-	
-	private static DbHandler handler = null;
-	
-	private DbHandler() {
-		getConnection();
+public class UserDao {
+	private final Connection conn;
+
+	public UserDao(Connection conn) {
+		this.conn = conn;
 	}
 	
-	public static DbHandler getInstance() {
-		if (handler == null) {
-			handler = new DbHandler();
-		}
-		return handler;
-	}
-	
-	public Connection getConnection() {
-		try {
-			Class.forName(DBConfig.DRIVER);
-			conn = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
-			System.out.println("Connected!");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return  conn;
-	}
-	
-<<<<<<< HEAD
     public boolean insertUser(String firstName, String lastName, String email, String password){
         PreparedStatement preparedStatement = null;
         
@@ -54,8 +30,8 @@ public class DbHandler {
                 }
             }
             
-            String insertQuery = "INSERT INTO USERS (firstName, lastName, email, password) "
-                    + "VALUES (?, ?, ?, ?)";
+            String insertQuery = "INSERT INTO USERS (first_name, last_name, email, pwd) "
+                    + "VALUES (?, ?, ?, SHA(?))";
             
             preparedStatement = conn.prepareStatement(insertQuery);
             preparedStatement.setString(1, firstName);
@@ -72,6 +48,7 @@ public class DbHandler {
         return false;
     }
     
+
     public boolean checkCredentials(String email, String password){
         String query = "SELECT user_id FROM USERS WHERE email = ? AND pwd = ?";
         
@@ -100,27 +77,39 @@ public class DbHandler {
     }
     
     
-    /**
-     * select data from Recipes table
-     * @return data set of Recipe table
-     * @throws SQLException
-     */
-    public ResultSet selectRecipes() throws SQLException {
-    	String query = "SELECT * from Recipe order by created_date DESC LIMIT 5";
-    	Statement stmt = null;
-    	
+    public UserDto selectUser(String email, String password) {
+    	PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        UserDto user= null;
     	try {
-    		stmt =conn.createStatement();
-	    	ResultSet result = stmt.executeQuery(query);
-	    	return result;
-    		
-    	} catch (SQLException e) {
-			System.out.println("Select recipe error: " + e.getMessage());
-		}
-    	
-    	return null;
-    }
-=======
->>>>>>> 45e42ed1e75edc600e7a994441691822d28042ad
+    		String query = "SELECT * FROM Users  WHERE email = ? AND pwd = ?";
+            pstmt = conn.prepareStatement(query);
+            rs = pstmt.executeQuery();
 
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                String user_firstName = rs.getString("first_name");
+                String user_lastName = rs.getString("last_name");
+                String user_email = rs.getString("email");
+                String user_password = rs.getString("pwd");
+                user = new UserDto(id, user_firstName, user_lastName, user_email, user_password);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(pstmt != null) {
+                    pstmt.close();
+                }
+                if(rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    	
+    	return user;
+    }
 }
