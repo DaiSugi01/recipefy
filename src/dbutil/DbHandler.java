@@ -68,8 +68,8 @@ public class DbHandler {
         return false;
     }
     
-    public int checkCredentials(String email, String password){
-        String query = "SELECT id FROM USERS WHERE email = ? AND password = ?";
+    public boolean checkCredentials(String email, String password){
+        String query = "SELECT user_id FROM USERS WHERE email = ? AND pwd = ?";
         
         PreparedStatement preparedStatement = null;
         
@@ -77,18 +77,22 @@ public class DbHandler {
             preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
-            
+
+            System.out.println("OK");
             ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("OK1");
             
             if(resultSet.next()){
-                return resultSet.getInt(1);
+                return (resultSet.getInt(1) == 1);
             }
+            System.out.println("OK2");
+            
             
         }catch(Exception e){
             System.out.println("Check credentials error, " + e.getMessage());
         }
         
-        return -1;
+        return false;
     }
 
 }
