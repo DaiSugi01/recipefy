@@ -22,7 +22,7 @@ public class DbHandler {
 		return handler;
 	}
 	
-	private void getConnection() {
+	public Connection getConnection() {
 		try {
 			Class.forName(DBConfig.DRIVER);
 			conn = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
@@ -30,69 +30,8 @@ public class DbHandler {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		return  conn;
 	}
 	
-    public boolean insertUser(String firstName, String lastName, String email, String password){
-        PreparedStatement preparedStatement = null;
-        
-        try{
-            ResultSet resultSet;   
-            String countEmails = "SELECT COUNT(*) FROM USERS WHERE email = ?";
-            
-            preparedStatement = conn.prepareStatement(countEmails);
-            preparedStatement.setString(1, email);
-            
-            resultSet = preparedStatement.executeQuery();
-            
-            if(resultSet.next()){
-                if(resultSet.getInt(1) > 0){
-                    return false;
-                }
-            }
-            
-            String insertQuery = "INSERT INTO USERS (firstName, lastName, email, password) "
-                    + "VALUES (?, ?, ?, ?)";
-            
-            preparedStatement = conn.prepareStatement(insertQuery);
-            preparedStatement.setString(1, firstName);
-            preparedStatement.setString(2, lastName);
-            preparedStatement.setString(3, email);
-            preparedStatement.setString(4, password);
-            
-            int result = preparedStatement.executeUpdate();
-            return (result == 1);
-            
-        }catch(Exception e){
-            System.out.println("Insert user error: " + e.getMessage());
-        }
-        return false;
-    }
-    
-    public boolean checkCredentials(String email, String password){
-        String query = "SELECT user_id FROM USERS WHERE email = ? AND pwd = ?";
-        
-        PreparedStatement preparedStatement = null;
-        
-        try{
-            preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, password);
-
-            System.out.println("OK");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("OK1");
-            
-            if(resultSet.next()){
-                return (resultSet.getInt(1) == 1);
-            }
-            System.out.println("OK2");
-            
-            
-        }catch(Exception e){
-            System.out.println("Check credentials error, " + e.getMessage());
-        }
-        
-        return false;
-    }
 
 }
