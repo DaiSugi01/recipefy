@@ -1,6 +1,8 @@
 package signup;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +15,7 @@ import user.UserDao;
 /**
  * Servlet implementation class Signup
  */
-@WebServlet("/Signup")
+@WebServlet("/signup")
 public class Signup extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -45,9 +47,23 @@ public class Signup extends HttpServlet {
 		System.out.println(email);
 		System.out.println(password);
 		
-		UserDao user = new UserDao(handler.getConnection());
+		if (isEmpty(firstName, lastName, email, password)) {
+			RequestDispatcher rd = request.getRequestDispatcher("/signup-error.html");
+			rd.forward(request, response);
+		} else {
+			
+			UserDao user = new UserDao(handler.getConnection());
+			
+			if (user.insertUser(firstName, lastName, email, password)) {
+				RequestDispatcher rd = request.getRequestDispatcher("/login.html");
+				rd.forward(request, response);			
+			} else {
+				// error
+				RequestDispatcher rd = request.getRequestDispatcher("/signup-error.html");
+				rd.forward(request, response);
+			}
+		}
 		
-		System.out.println(user.insertUser(firstName, lastName, email, password));
 		
 	}
 
@@ -59,4 +75,25 @@ public class Signup extends HttpServlet {
 		doGet(request, response);
 	}
 
+	
+	public boolean isEmpty(String firstName, String lastName, String email, String password) {
+		
+		if (firstName == null || firstName.isEmpty()) {
+			return true;
+		}
+
+		if (lastName == null || lastName.isEmpty()) {
+			return true;
+		}
+		
+		if (email == null || email.isEmpty()) {
+			return true;
+		}
+		
+		if (password == null || password.isEmpty()) {
+			return true;
+		}
+		
+		return false;
+	}
 }

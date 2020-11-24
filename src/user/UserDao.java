@@ -50,7 +50,7 @@ public class UserDao {
     
 
     public boolean checkCredentials(String email, String password){
-        String query = "SELECT user_id FROM USERS WHERE email = ? AND pwd = ?";
+        String query = "SELECT count(*) FROM USERS WHERE email = ? AND pwd = SHA(?)";
         
         PreparedStatement preparedStatement = null;
         
@@ -62,6 +62,8 @@ public class UserDao {
             System.out.println("OK");
             ResultSet resultSet = preparedStatement.executeQuery();
             System.out.println("OK1");
+            
+            System.out.println(email + " " + password);
             
             if(resultSet.next()){
                 return (resultSet.getInt(1) == 1);
@@ -82,7 +84,7 @@ public class UserDao {
         ResultSet rs = null;
         UserDto user= null;
     	try {
-    		String query = "SELECT * FROM Users  WHERE email = ? AND pwd = ?";
+    		String query = "SELECT * FROM Users  WHERE email = ? AND pwd = SHA(?)";
             pstmt = conn.prepareStatement(query);
             rs = pstmt.executeQuery();
 
