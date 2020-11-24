@@ -1,6 +1,8 @@
 package login;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -59,7 +61,9 @@ public class Login extends HttpServlet {
 			// go to error
 		};
 		
-		
+		RequestDispatcher rd = request.getRequestDispatcher("/login.html");
+		rd.forward(request, response);
+
 		
 	}
 
