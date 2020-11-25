@@ -1,7 +1,6 @@
 package recipe;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -11,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dbutil.DbHandler;
 
@@ -32,30 +32,26 @@ public class MainPage extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("[MainPage -- doGet] start");
 		
-		ArrayList<String> recipes = new ArrayList<>();
+		ArrayList<RecipeDto> recipes = new ArrayList<>();
 
 		try {
-			
 			DbHandler hander = DbHandler.getInstance();
-			ResultSet result = hander.selectRecipes();
+			RecipeDao recipeDao = new RecipeDao(hander.getConnection());
+			recipes = recipeDao.selectRecipes();
 			
-			while (result.next()) {
-				recipes.add(result.getString("recipe_name"));
-			}
 
 		} catch (SQLException e) {
 			System.out.println("[MainPage - doget()] Couldn't get data from recipes table");
 		}
 
-		System.out.println("run");
-
-		for (String string : recipes) {
-			System.out.println(string);
-		}
-
 		request.setAttribute("recipes", recipes);
 		RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
+
+		HttpSession session = request.getSession();
+		System.out.println(session.getAttribute("user"));
+		System.out.println("[MainPage -- doGet] finish");
 		rd.forward(request, response);
 	}
 

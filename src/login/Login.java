@@ -55,11 +55,10 @@ public class Login extends HttpServlet {
 			System.out.println("[Login success!");
 
 			HttpSession session = request.getSession();
-			session.setAttribute("user", userDto);
 			
 			System.out.println("[Login success1!");
-			UserDto userDto1 = (UserDto)session.getAttribute("user");
-			
+			session.setAttribute("user", userDto);
+
 			System.out.println("[Login success2!");
 			RequestDispatcher rd = request.getRequestDispatcher("/home");
 			rd.forward(request, response);
@@ -69,8 +68,8 @@ public class Login extends HttpServlet {
 			rd.forward(request, response);	
 		};
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/login.html");
-		rd.forward(request, response);
+//		RequestDispatcher rd = request.getRequestDispatcher("/login.html");
+//		rd.forward(request, response);
 	}
 
 	/**
