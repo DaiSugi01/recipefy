@@ -2,10 +2,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <title>Insert title here</title>
 </head>
-<body>
-	<a href="signup.html">Sign Up</a>
-	<a href="login.html">Login</a>
+<body class="bg-cover bg-center bg-no-repeat text-white" style="background-image: url(/java-group-project/img/top.jpg)">
+
+	<header class="w-full flex justify-center items-center bg-gray-900 bg-opacity-50 p-4 fixed">
+		<nav class="flex">
+	    	<a class="mr-16 font-semibold" href="index.html">Home</a>
+	        <a class="mr-16 font-semibold" href="signup.html">Sign Up</a>
+		    <a class="font-semibold" href="login.html">Login</a>
+		</nav>
+	</header>
+		
+	<div class="w-screen h-screen bg-black bg-opacity-25">
+		<div class="w-full h-full flex justify-center items-center">
+        	<h1 class="text-6xl font-bold">Welcome to Recipefy.</h1>
+         </div>
+	</div>
+
 </body>
 </html>

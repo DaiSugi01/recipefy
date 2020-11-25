@@ -22,15 +22,19 @@ public class UserDto {
 	//getter
 	//setter
 	
+	/*
+	 * @return id
+	 */
 	public int getId() {
 		return id;
 	}
 
-
+	/*
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	/*
 	 * @return firstName
