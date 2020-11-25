@@ -1,6 +1,7 @@
 package recipe;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,8 +34,10 @@ public class RecipeDao {
     		while (rs.next()) {
     			int recipeId = rs.getInt("recipe_id");
     			String recipeName = rs.getString("recipe_name");
-    			int userId = rs.getInt("user_id");
-    			recipes.add(new RecipeDto(recipeId, recipeName, userId));
+    			int userId = rs.getInt("user_id");    			
+    			Date updatedDate = rs.getDate("updated_date");
+    			Date createdDate = rs.getDate("created_date");
+    			recipes.add(new RecipeDto(recipeId, recipeName, userId, updatedDate, createdDate));
     		}
     		
     	} catch (SQLException e) {
@@ -78,7 +81,9 @@ public class RecipeDao {
     			int recipeId = rs.getInt("recipe_id");
     			String recipeName = rs.getString("recipe_name");
     			int userId = rs.getInt("user_id");
-    			recipes.add(new RecipeDto(recipeId, recipeName, userId));
+    			Date updatedDate = rs.getDate("updated_date");
+    			Date createdDate = rs.getDate("created_date");
+    			recipes.add(new RecipeDto(recipeId, recipeName, userId, updatedDate, createdDate));
     		}
     		
     	} catch (SQLException e) {
@@ -98,7 +103,5 @@ public class RecipeDao {
     	
     	return recipes;
     }
-    
-    
 
 }

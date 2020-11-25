@@ -26,11 +26,13 @@
 
 				<div class="searched-recipe-box">			
 			   		<% for (RecipeDto recipe : searchedRecipeList) { %>
-						<div class="recipe">
-							<p><%= recipe.getRecipeId() %></p>
-							<p><%= recipe.getRecipeName() %></p>
-							<p><%= recipe.getUserId() %></p>
-						</div>
+			   			<a href=<%= "searchDetail/" + recipe.getRecipeId()%> >
+							<div class="recipe">
+								<p><%= recipe.getRecipeId() %></p>
+								<p><%= recipe.getRecipeName() %></p>
+								<p><%= recipe.getUserId() %></p>
+							</div>
+			   			</a>
 					<% } %>
 				</div>
 			</div>
