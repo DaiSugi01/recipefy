@@ -17,8 +17,8 @@
 				</select>
 			</div>
 			
-			<form class="form">
-				<input class="search-box" type="search" placeholder="Find a Recipe">
+			<form class="form" action="searchResult">
+				<input class="search-box" type="search" name="search" placeholder="Find a Recipe">
 				<input class="submit-button" type="submit" value="Search">
 			</form>
 		</div>
