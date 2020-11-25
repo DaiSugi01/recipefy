@@ -46,31 +46,21 @@ public class Login extends HttpServlet {
 		System.out.println(password);
 		UserDao user = new UserDao(handler.getConnection());
 		
-		System.out.println("[Login success!");
 		if (user.checkCredentials(email, password)) {
 			
-			// DaoでDabaseにアクセス
-			// DaoでSQL実行 -> Dtoに結果を保存
 			UserDto userDto = user.selectUser(email, password);
-			System.out.println("[Login success!");
 
 			HttpSession session = request.getSession();
 			session.setAttribute("user", userDto);
 			
-			System.out.println("[Login success1!");
-			UserDto userDto1 = (UserDto)session.getAttribute("user");
-			
-			System.out.println("[Login success2!");
-			RequestDispatcher rd = request.getRequestDispatcher("/home");
-			rd.forward(request, response);
+			response.sendRedirect("home");
+
 		} else {
 			// go to error
 			RequestDispatcher rd = request.getRequestDispatcher("/login-error.html");
 			rd.forward(request, response);	
 		};
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/login.html");
-		rd.forward(request, response);
 	}
 
 	/**

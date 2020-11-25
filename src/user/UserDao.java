@@ -86,10 +86,12 @@ public class UserDao {
     	try {
     		String query = "SELECT * FROM Users  WHERE email = ? AND pwd = SHA(?)";
             pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
-                int id = rs.getInt("id");
+                int id = rs.getInt("user_id");
                 String user_firstName = rs.getString("first_name");
                 String user_lastName = rs.getString("last_name");
                 String user_email = rs.getString("email");

@@ -10,46 +10,44 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dbutil.DbHandler;
 
 /**
- * Servlet implementation class MainPage
+ * Servlet implementation class SearchResult
  */
-@WebServlet("/home")
-public class MainPage extends HttpServlet {
+@WebServlet("/searchResult")
+public class SearchResult extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MainPage() {
+    public SearchResult() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("[MainPage -- doGet] start");
+		String keyword = request.getParameter("search");
+		DbHandler hander = DbHandler.getInstance();
+		ArrayList<RecipeDto> searchedRecipe = null;
 		
-		ArrayList<RecipeDto> recipes = new ArrayList<>();
-
 		try {
-			DbHandler hander = DbHandler.getInstance();
-			RecipeDao recipeDao = new RecipeDao(hander.getConnection());
-			recipes = recipeDao.selectRecipes();
+			RecipeDao recipe = new RecipeDao(hander.getConnection());
+			searchedRecipe = recipe.selectRecipesbyKeyword(keyword);
 			
-
 		} catch (SQLException e) {
-			System.out.println("[MainPage - doget()] Couldn't get data from recipes table");
+			System.out.println("[SearchResult--doget] failed: " + e.getMessage());
 		}
-
-		request.setAttribute("recipes", recipes);
-		System.out.println("[MainPage -- doGet] finish");
-
-		RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
+		
+		request.setAttribute("searchedRecipes", searchedRecipe);
+		System.out.println("[SearchResult -- doGet] finish");
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/searchResult.jsp");
 		rd.forward(request, response);
 	}
 
@@ -57,6 +55,7 @@ public class MainPage extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

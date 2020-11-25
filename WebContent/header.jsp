@@ -1,5 +1,11 @@
+<%@page import="user.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	UserDto userDto = (UserDto) session.getAttribute("user");
+%>
+    
+    
 <header class="header">
 
 	<div class="header-inner">
@@ -11,27 +17,27 @@
 				</select>
 			</div>
 			
-			<form class="form">
-				<input class="search-box" type="search" placeholder="Find a Recipe">
+			<form class="form" action="searchResult">
+				<input class="search-box" type="search" name="search" placeholder="Find a Recipe">
 				<input class="submit-button" type="submit" value="Search">
 			</form>
 		</div>
 	
 		<nav class="nav">
 			<ul class="nav-items">
-			<% if (false) { %>
+			<% if (userDto != null) { %>
 				<li class="nav-item">
 					<a class="nav-link" href="#">Add Recipe</a>
-				</li>				
+				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="#">Logout</a>
 				</li>
 			<% } else { %>	
 				<li class="nav-item login">
-					<a class="nav-link login" href="#">Login</a>
+					<a class="nav-link login" href="/java-group-project/login">Login</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">Sign up</a>
+					<a class="nav-link" href="/java-group-project/signup">Sign up</a>
 				</li>
 			<% } %>
 			
