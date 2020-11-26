@@ -17,7 +17,7 @@
 			  	<label for="password" class="text-xl">Password</label><br>
 			  	<input type="password" name="password" class="w-full text-gray-500 rounded p-1 my-2" required>
 			  	<input type="submit" value="Login" class="bg-transparent hover:bg-red-500 border rounded p-1 px-2 my-2"><br>
-				<h3 class="my-2"><a href="signup.jsp" class="border-transparent hover:border-red-500">New member? Join Us!</a></h3>
+				<h3 class="my-2 text-lg"><a href="signup.jsp" class="hover:opacity-75">New member? <strong>Join Us Today!</strong></a></h3>
 			</form>
          </div>
 	</div>	

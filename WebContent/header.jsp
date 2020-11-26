@@ -21,13 +21,13 @@
 			
 			<div class="flex">
 				<% if (userDto != null) { %>
-		    	<a class="mr-16 font-semibold" href="home">Home</a>
-		        <a class="mr-16 font-semibold" href="add-recipe.jsp">Add Recipe</a>
-			    <a class="font-semibold" href="logout">Logout</a>
+		    	<a class="mr-16 font-semibold hover:opacity-75" href="home">Home</a>
+		        <a class="mr-16 font-semibold hover:opacity-75" href="addRecipe">Add Recipe</a>
+			    <a class="font-semibold hover:opacity-75" href="logout">Logout</a>
 				<% } else { %>	
-		    	<a class="mr-16 font-semibold" href="home">Home</a>
-		        <a class="mr-16 font-semibold" href="signup">Sign Up</a>
-			    <a class="font-semibold" href="login">Login</a>
+		    	<a class="mr-16 font-semibold hover:opacity-75" href="home">Home</a>
+		        <a class="mr-16 font-semibold hover:opacity-75" href="signup">Sign Up</a>
+			    <a class="font-semibold hover:opacity-75" href="login">Login</a>
 			    <% } %>
 			</div>
 		</nav>

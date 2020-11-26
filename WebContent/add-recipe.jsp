@@ -8,9 +8,9 @@
 	<jsp:include page="common-title.jsp" flush="true" />
 	<jsp:include page="header.jsp" flush="true" />
 
-	<div class="w-screen h-screen bg-black bg-opacity-25">
-		<div class="w-full h-full flex justify-center items-center">
-        	<form action="addRecipe" method="POST" class="w-1/3" enctype="multipart/form-data">
+	<div class="w-screen">
+		<div class="w-full flex justify-center items-center">
+        	<form action="addRecipe" method="POST" class="w-1/3 my-24" enctype="multipart/form-data">
 	        	<h1 class="my-4 text-3xl font-bold">Add Your Recipe</h1>
 			  	<label for="recipeName" class="text-xl">Recipe Name</label><br>
 			  	<input type="text" name="recipeName" class="w-full text-gray-500 rounded p-1 my-2" required><br>	
@@ -22,13 +22,13 @@
 					<option value="">--Please choose an option--</option>
 					<option value="category">Canadian</option>
 					<option value="category">Japanese</option>
-					<option value="category">others</option>
+					<option value="category">Others</option>
 				</select>
 			  	<label for="ingredients" class="text-xl">Ingredients</label><br>
 			  	<div class="flex justify-between">
 				  	<input type="text" name="ingredients1" class="w-1/4 text-gray-500 rounded p-1 my-2" required>
-				  	<input type="text" name="ingredients2" class="w-1/4 text-gray-500 rounded p-1 my-2" required>
-				  	<input type="text" name="ingredients3" class="w-1/4 text-gray-500 rounded p-1 my-2" required>			  	
+				  	<input type="text" name="ingredients2" class="w-1/4 text-gray-500 rounded p-1 my-2">
+				  	<input type="text" name="ingredients3" class="w-1/4 text-gray-500 rounded p-1 my-2">			  	
 			  	</div>
 			  	<label for="directions" class="text-xl">Directions</label><br>
 			  	<div class="flex">

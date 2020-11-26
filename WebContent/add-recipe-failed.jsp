@@ -4,13 +4,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-Something wrong...
-
-<a href="/java-group-project/addRecipe">Try again</a>
-<a href="/java-group-project/home">Go to home</a>
+	<jsp:include page="common-title.jsp" flush="true" />
+	<jsp:include page="header.jsp" flush="true" />
+		
+	<div class="w-screen h-screen">
+		<div class="w-full h-full flex justify-center items-center">
+			<div class="text-center">
+				<h1 class="my-4 text-3xl font-bold">Error!</h1>
+				<button class="bg-transparent hover:bg-red-500 border rounded p-1 px-2 mt-2">
+					<a href="addRecipe">Try again</a>
+				</button>
+			</div>
+		</div>
+	</div>
+	
 </body>
 </html>
