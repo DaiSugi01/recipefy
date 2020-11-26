@@ -59,16 +59,11 @@ public class UserDao {
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
 
-            System.out.println("OK");
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("OK1");
-            
-            System.out.println(email + " " + password);
             
             if(resultSet.next()){
                 return (resultSet.getInt(1) == 1);
             }
-            System.out.println("OK2");
             
             
         }catch(Exception e){
