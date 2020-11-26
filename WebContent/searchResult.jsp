@@ -2,9 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="recipe.RecipeDto" %>
+<%@ page import="java.io.InputStream" %>
+<%@ page import="java.io.OutputStream" %>
+<%@ page import="java.awt.image.BufferedImage" %>
+<%@ page import="recipe.SearchResult" %>
+
 
 <% 
 	ArrayList<RecipeDto> searchedRecipeList = (ArrayList<RecipeDto>) request.getAttribute("searchedRecipes");
+	OutputStream outputStream = (OutputStream)request.getAttribute("outputStream");
 %>
 
 <!DOCTYPE html>
@@ -28,6 +34,8 @@
 			   		<% for (RecipeDto recipe : searchedRecipeList) { %>
 			   			<a href=<%= "searchDetail/" + recipe.getRecipeId()%> >
 							<div class="recipe">
+								<%-- <img src=<% outputStream.flush();%>> --%>
+								
 								<p><%= recipe.getRecipeId() %></p>
 								<p><%= recipe.getRecipeName() %></p>
 								<p><%= recipe.getUserId() %></p>

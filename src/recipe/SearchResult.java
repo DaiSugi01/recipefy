@@ -49,11 +49,12 @@ public class SearchResult extends HttpServlet {
 			searchedRecipe = recipe.selectRecipesbyKeyword(keyword);
 
 			for (RecipeDto recipeDto : searchedRecipe) {
-				response.setContentType("image/png");
+//				response.setContentType("image/png");
 				OutputStream outputStream = response.getOutputStream();
 				BufferedImage img = deserializeImage(recipeDto.getRecipeImage());
 				ImageIO.write(img, "png", outputStream);
-				outputStream.flush();
+				request.setAttribute("outputStream", outputStream);
+//				outputStream.flush();
 			}
 			
 		} catch (SQLException e) {
