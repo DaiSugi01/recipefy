@@ -33,24 +33,13 @@
 								session.setAttribute("recipe", searchedRecipeList.get(i));
 					%>
 
-<%-- 				   	<a href="searchDetail.jsp">
-						<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
-							<img src="https://source.unsplash.com/1200x800/?dish" class="w-full rounded mb-3">
-							<p>Recipe Name: <%= recipe.getRecipeName() %></p>
-							<p>Category: <%= recipe.getRecipeCategory() %></p>
-							<p>Time: <%= recipe.getTimeToCook() %> mins</p>
-						</div>
-					</a> --%>
-								
-<%-- 					<% } %> --%>
-
 						<a href=<%="searchDetail/" + searchedRecipeList.get(i).getRecipeId() %>>
-							<div class="bg-white bg-opacity-30 rounded p-6 mb-6">
+							<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
 		 						<img src="getImage" alt="image" class="w-full rounded mb-3">
 		 						<!-- <img src="https://source.unsplash.com/1200x800/?dish" class="w-full rounded mb-3"> -->
 		 						<p>Recipe Name: <%= searchedRecipeList.get(i).getRecipeName() %></p>
-		 						<p>Recipe Category: <%= searchedRecipeList.get(i).getRecipeCategory() %></p>
-		 						<p>Recipe : <%= searchedRecipeList.get(i).getTimeToCook() %></p>
+		 						<p>Category: <%= searchedRecipeList.get(i).getRecipeCategory() %></p>
+		 						<p>Time: <%= searchedRecipeList.get(i).getTimeToCook() %></p>
 							</div>
 						</a>
 						<% 

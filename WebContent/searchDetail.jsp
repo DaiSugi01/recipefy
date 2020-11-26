@@ -25,14 +25,12 @@
 			<div class="w-full h-2/3 grid grid-cols-2 bg-white bg-opacity-30 rounded shadow-md m-12 mt-20 p-6">
 				
 				<!-- image column -->	
-				<div class="flex items-center">
-					<img src="getImage" alt="image" class="w-full rounded" width="1000" height="700">
-<!-- 					<img src="https://source.unsplash.com/1000x700/?dish" class="rounded"  width="1000" height="700"> -->
+				<div class="h-full bg-cover bg-center bg-no-repeat rounded" style="background-image: url(https://source.unsplash.com/1200x800/?dish)">
 				</div>
 				<!-- description column -->
 				<div class="flex justify-center items-center">
 					<div class="p-6">
-						<h1 class="mt-4 mb-8 text-3xl font-bold"><%= recipe.getRecipeName() %></h1>
+						<h1 class="mb-8 text-3xl font-bold"><%= recipe.getRecipeName() %></h1>
 						<p>User: <%= recipe.getUserId() %></p>
 						<p>Created Date: <%= recipe.getCreatedDate() %></p>
 						<p>Category: <%= recipe.getRecipeCategory() %></p>
@@ -44,7 +42,6 @@
 						<% for (DirectionsDto dire :dires) { %>
 							<p>Directions: <%= dire.getDirection() %></p>
 						<% } %>
-						
 					</div>
 				</div>
 				
@@ -53,12 +50,7 @@
 	</div>
 	
 
-<%-- 	<jsp:include page="common-title.jsp" flush="true" />
-	<jsp:include page="header.jsp" flush="true" />
-
-	<div class="w-screen">
-		<div class="w-full flex justify-center items-center">
-			<div class="w-1/2 text-center mt-24">
+<%-- 	
 					<% if (recipe != null) { %>
 						<div class="bg-white bg-opacity-30 rounded p-6 mb-6">
 							<img src="getImage" alt="image" class="w-full rounded mb-3">
@@ -78,8 +70,7 @@
 							</c:foreach>
 						</div>
 					<% } %>
-			</div>
-		</div>
+
 	</div> --%>
 
 </body>
