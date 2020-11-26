@@ -12,6 +12,7 @@
 <% 
 	ArrayList<RecipeDto> searchedRecipeList = (ArrayList<RecipeDto>) session.getAttribute("searchedRecipes");
 	session = request.getSession();
+	String URL = "https://source.unsplash.com/1200x800/?";
 %>
 
 <!DOCTYPE html>
@@ -31,11 +32,15 @@
  							for (int i = 0; i < searchedRecipeList.size(); i++) {
 								System.out.println("JSP run");
 								session.setAttribute("recipe", searchedRecipeList.get(i));
+				   				String recipeNameWithComma = searchedRecipeList.get(i).getRecipeName().trim().replaceAll(" ", ",");
 					%>
 
 						<a href=<%="searchDetail/" + searchedRecipeList.get(i).getRecipeId() %>>
+
 							<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
-		 						<img src="getImage" alt="image" class="w-full rounded mb-3">
+		 						<!-- <img src="getImage" alt="image" class="w-full rounded mb-3"> -->
+		 						<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
+
 		 						<!-- <img src="https://source.unsplash.com/1200x800/?dish" class="w-full rounded mb-3"> -->
 		 						<p>Recipe Name: <%= searchedRecipeList.get(i).getRecipeName() %></p>
 		 						<p>Category: <%= searchedRecipeList.get(i).getRecipeCategory() %></p>

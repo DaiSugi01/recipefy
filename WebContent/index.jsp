@@ -5,6 +5,7 @@
 
 <% 
 	ArrayList<RecipeDto> latestRecipeList = (ArrayList<RecipeDto>) request.getAttribute("recipes");
+	String URL = "https://source.unsplash.com/1200x800/?";
 %>
 
 <!DOCTYPE html>
@@ -21,12 +22,14 @@
 				<div>
 					<h1 class="mt-4 mb-8 text-3xl font-bold">Latest Recipes</h1>
 			   		<%
-			   			if (latestRecipeList != null) {			   			
-				   			for (RecipeDto recipe : latestRecipeList) { 
+			   			if (latestRecipeList != null && latestRecipeList.size() > 0) {			   			
+				   			for (RecipeDto recipe : latestRecipeList) {
+				   				String recipeNameWithComma = recipe.getRecipeName().trim().replaceAll(" ", ",");
 				   	%>
-				   	<a href="searchDetail.jsp">
+				   	<a href=<%="searchDetail/" + recipe.getRecipeId() %>>
 						<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
-							<img src="https://source.unsplash.com/1200x800/?dish" class="w-full rounded mb-3">
+							<!-- <img src="https://source.unsplash.com/1200x800/?thai,curry" class="w-full rounded mb-3"> -->
+ 							<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
 							<p>Recipe Name: <%= recipe.getRecipeName() %></p>
 							<p>Category: <%= recipe.getRecipeCategory() %></p>
 							<p>Time: <%= recipe.getTimeToCook() %> mins</p>

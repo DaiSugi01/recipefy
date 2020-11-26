@@ -35,8 +35,11 @@
 						<p>Created Date: <%= recipe.getCreatedDate() %></p>
 						<p>Category: <%= recipe.getRecipeCategory() %></p>
 						<p>Time: <%= recipe.getTimeToCook() %> mins</p>
-						<% for (IngredientsDto ing :ings) { %>
-							<p>Ingredients: <%= ing.getIngName() %></p>
+						<% for (IngredientsDto ing :ings) { 
+							if(!ing.getIngName().isEmpty()) {
+						%>
+								<p>Ingredients: <%= ing.getIngName() %></p>
+							<% } %>
 						<% } %>
 						
 						<% for (DirectionsDto dire :dires) { %>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -80,18 +81,6 @@ public class SearchDetail extends HttpServlet {
 		session.setAttribute("recipe", recipeDto);
 		session.setAttribute("ings", ings);
 		session.setAttribute("dires", dires);
-
-		System.out.println(session.getAttribute("ings"));
-		ArrayList<IngredientsDto> i = (ArrayList<IngredientsDto>) session.getAttribute("ings");
-		for (IngredientsDto in : i) {
-			System.out.println(in.getIngName());
-		}
-		
-		System.out.println(session.getAttribute("dires"));
-		ArrayList<DirectionsDto> d = (ArrayList<DirectionsDto>) session.getAttribute("dires");
-		for (DirectionsDto dd : d) {
-			System.out.println(dd.getDirection());
-		}
 
 		response.sendRedirect("/java-group-project/searchDetail.jsp");
 	}

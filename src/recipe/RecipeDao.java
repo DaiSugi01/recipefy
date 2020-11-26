@@ -22,6 +22,49 @@ public class RecipeDao {
 		this.conn = conn;
 	}
 
+    /**
+     * this medhod is deleted and replaced with selectRecipesbyKeyword in the future
+     * @return data set of Recipe table
+     * @throws SQLException
+     */
+    public ArrayList<RecipeDto> tempSelectRecipesbyKeyword(String keyword) throws SQLException {
+    	String query = "SELECT * FROM Recipe WHERE recipe_name like ? ORDER BY created_date DESC LIMIT 1";
+    	keyword = "%" + keyword + "%";
+
+    	PreparedStatement ppsmt = null;
+    	ResultSet rs = null;
+    	ArrayList<RecipeDto> recipes = new ArrayList<>();
+    	
+    	try {
+    		ppsmt =conn.prepareStatement(query);
+    		ppsmt.setString(1, keyword);
+    		rs = ppsmt.executeQuery();
+    		
+    		while (rs.next()) {
+    			recipes.add(getColumn(rs));
+    		}
+    		
+    	} catch (SQLException | IOException e) {
+    		System.out.println("Select recipe by kewyord error: " + e.getMessage());
+    	} finally {
+    		try {
+    			if(ppsmt != null) {
+    				ppsmt.close();
+    			}
+    			if(rs != null) {
+    				rs.close();
+    			}
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	
+    	return recipes;
+    }
+
+    
+
+    
 	public RecipeDto getColumn(ResultSet rs) throws SQLException, IOException {
 		int recipeId = rs.getInt("recipe_id");
 		String recipeName = rs.getString("recipe_name");
@@ -85,7 +128,7 @@ public class RecipeDao {
      * @throws SQLException
      */
     public ArrayList<RecipeDto> selectRecipesbyKeyword(String keyword) throws SQLException {
-    	String query = "SELECT * FROM Recipe WHERE recipe_name like ?";
+    	String query = "SELECT * FROM Recipe WHERE recipe_name like ? ORDER BY created_date DESC";
     	keyword = "%" + keyword + "%";
 
     	PreparedStatement ppsmt = null;
