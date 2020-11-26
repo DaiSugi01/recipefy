@@ -7,13 +7,28 @@ public class DirectionsDto {
 
 	private int dirId;
 	private String direction;
+	private int recipeId;
 	private Date createdDate;
 	
-	public DirectionsDto(int dirId, String direction, Date createdDate) {
-		super();
-		this.dirId = dirId;
-		this.direction = direction;
-		this.createdDate = createdDate;
+	public DirectionsDto(int dirId, String direction, int recipeId, Date createdDate) {
+		setDirection(direction);
+		setDirection(direction);
+		setRecipeId(recipeId);
+		setCreatedDate(createdDate);
+	}
+
+	/**
+	 * @return the recipeId
+	 */
+	public int getRecipeId() {
+		return recipeId;
+	}
+
+	/**
+	 * @param recipeId the recipeId to set
+	 */
+	public void setRecipeId(int recipeId) {
+		this.recipeId = recipeId;
 	}
 
 	/**

@@ -19,9 +19,7 @@ public class DirectionsDao {
 	
     public ArrayList<IngredientsDto> selectDirections(int recipeId) {
     	String query = 
-    			"SELECT D.dir_id, D.direction, D.created_date FROM Directions as D "
-    			+ "INNER JOIN RecipeDirections as RD on D.dir_id = RD.dir_id "
-    			+ "WHERE RD.recipe_id = ? ORDER BY D.dir_id";
+    			"SELECT * FROM Directions WHERE recipe_id = ? ORDER BY dir_id";
     	PreparedStatement pstmt = null;
         ResultSet rs = null;
         ArrayList<IngredientsDto> directions = new ArrayList<>();
@@ -55,5 +53,30 @@ public class DirectionsDao {
     	
     	return directions;
     }
+    
+    public boolean insertDirections(String directions, int recipe_id){
+        PreparedStatement preparedStatement = null;
+        System.out.println("[DirectionsDao] insertDirections run");
+        
+        try{
+            
+            String insertQuery = "INSERT INTO Directions (direction, recipe_id) VALUES (?, ?)";
+            
+            preparedStatement = conn.prepareStatement(insertQuery);
+            preparedStatement.setString(1, directions);
+            preparedStatement.setInt(2, recipe_id);
+            
+            int result = preparedStatement.executeUpdate();
+            System.out.println("SQL: "+ insertQuery + ", "
+            		+ "value: directions=" + directions + ", recipe_id=" + recipe_id);
+            return (result == 1);
+            
+        }catch(Exception e){
+            System.out.println("Insert Directions error: " + e.getMessage());
+        }
+        return false;
+    }
+    
+    
     
 }
