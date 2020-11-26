@@ -31,8 +31,10 @@
 				  	<input type="text" name="ingredients3" class="w-1/4 text-gray-500 rounded p-1 my-2">			  	
 			  	</div>
 			  	<label for="directions" class="text-xl">Directions</label><br>
-			  	<div class="flex">
-				  	<textarea name="directions" rows="2" class="w-full text-gray-500 rounded p-1 my-2" required></textarea>		  	
+			  	<div>
+				  	<textarea name="directions1" rows="1" class="w-full text-gray-500 rounded p-1 my-2" required></textarea>		  	
+				  	<textarea name="directions2" rows="1" class="w-full text-gray-500 rounded p-1 my-2"></textarea>		  	
+				  	<textarea name="directions3" rows="1" class="w-full text-gray-500 rounded p-1 my-2"></textarea>		  	
 			  	</div>
 			  	<label for="times" class="text-xl">Time</label><br>
 			  	<select name="times" class="w-full text-gray-500 rounded p-1 my-2" required>

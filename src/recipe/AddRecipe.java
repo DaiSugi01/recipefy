@@ -69,7 +69,7 @@ public class AddRecipe extends HttpServlet {
 		
 		System.out.println("[AddRecipe--doPost] run");
 		
-		boolean isError = false;
+		boolean isError = true;
 		
 		HttpSession session = request.getSession();
 		UserDto user = (UserDto)session.getAttribute("user");

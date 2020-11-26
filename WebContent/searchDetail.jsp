@@ -25,7 +25,7 @@
 			<div class="w-full h-2/3 grid grid-cols-2 bg-white bg-opacity-30 rounded shadow-md m-12 mt-20 p-6">
 				
 				<!-- image column -->	
-				<div class="h-full bg-cover bg-center bg-no-repeat rounded" style="background-image: url(https://source.unsplash.com/1200x800/?dish)">
+				<div class="h-full bg-cover bg-center bg-no-repeat rounded" style="background-image: url(getImage)">
 				</div>
 				<!-- description column -->
 				<div class="flex justify-center items-center">

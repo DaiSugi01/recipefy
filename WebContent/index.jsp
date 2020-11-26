@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
 <%@ page import="java.util.*" %>
+<%@page import="user.UserDto"%>
 <%@ page import="recipe.RecipeDto" %>
 
 <% 
 	ArrayList<RecipeDto> latestRecipeList = (ArrayList<RecipeDto>) request.getAttribute("recipes");
+	UserDto userDto = (UserDto) session.getAttribute("user");
 	String URL = "https://source.unsplash.com/1200x800/?";
 %>
+
 
 <!DOCTYPE html>
 <html>
@@ -38,9 +41,12 @@
 					<% } %>
 					<% } else { %>
 						<p class="my-8">We don't have any recipes yet.</p>
-						<button class="bg-transparent hover:bg-red-500 text-xl border rounded p-1 px-2">
-							<a href="signup">Join Us Today!</a>
-						</button>		
+						
+						<% if (userDto == null) { %>
+							<button class="bg-transparent hover:bg-red-500 text-xl border rounded p-1 px-2">
+								<a href="signup">Join Us Today!</a>
+							</button>
+						<% } %>		
 					<% } %>
 				</div>
 			</div>

@@ -38,8 +38,6 @@ public class Logout extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		session.removeAttribute("user");
-//		RequestDispatcher rd = request.getRequestDispatcher("/logout.jsp");
-//		rd.forward(request, response);
 		
 		response.sendRedirect("/java-group-project/logout.jsp");
 	}
