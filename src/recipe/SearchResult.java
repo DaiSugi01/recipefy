@@ -1,9 +1,15 @@
 package recipe;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,10 +44,20 @@ public class SearchResult extends HttpServlet {
 		String keyword = request.getParameter("search");
 		DbHandler hander = DbHandler.getInstance();
 		ArrayList<RecipeDto> searchedRecipe = null;
+
+
 		
 		try {
 			RecipeDao recipe = new RecipeDao(hander.getConnection());
 			searchedRecipe = recipe.selectRecipesbyKeyword(keyword);
+
+			for (RecipeDto recipeDto : searchedRecipe) {
+				response.setContentType("image/png");
+				OutputStream outputStream = response.getOutputStream();
+				BufferedImage img = deserializeImage(recipeDto.getRecipeImage());
+				ImageIO.write(img, "png", outputStream);
+				outputStream.flush();
+			}
 			
 		} catch (SQLException e) {
 			System.out.println("[SearchResult--doget] failed: " + e.getMessage());
@@ -68,4 +84,13 @@ public class SearchResult extends HttpServlet {
 		doGet(request, response);
 	}
 
+	public BufferedImage deserializeImage(byte[] recipeImage) throws IOException {
+      InputStream inputStream = new ByteArrayInputStream(recipeImage);
+
+      BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+      BufferedImage img = ImageIO.read(bufferedInputStream);
+      
+      return img;
+
+	}
 }
