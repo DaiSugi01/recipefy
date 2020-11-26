@@ -20,8 +20,11 @@
 			  	<label for="categories" class="text-xl">Category</label><br>
 			  	<select name="categories" class="w-full text-gray-500 rounded p-1 my-2" required>
 					<option value="">--Please choose an option--</option>
+					<option value="category">American</option>
 					<option value="category">Canadian</option>
 					<option value="category">Japanese</option>
+					<option value="category">Korean</option>
+					<option value="category">Mexican</option>
 					<option value="category">Others</option>
 				</select>
 			  	<label for="ingredients" class="text-xl">Ingredients</label><br>
@@ -39,7 +42,8 @@
 			  	<label for="times" class="text-xl">Time</label><br>
 			  	<select name="times" class="w-full text-gray-500 rounded p-1 my-2" required>
 					<option value="">--Please choose an option--</option>
-					<option value="time">0 - 30 min</option>
+					<option value="time">0 - 15 min</option>
+					<option value="time">15 - 30 min</option>
 					<option value="time">30 - 60 min</option>
 					<option value="time">more than 60 min</option>
 				</select>

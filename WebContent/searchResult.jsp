@@ -40,8 +40,6 @@
 							<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
 		 						<!-- <img src="getImage" alt="image" class="w-full rounded mb-3"> -->
 		 						<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
-
-		 						<!-- <img src="https://source.unsplash.com/1200x800/?dish" class="w-full rounded mb-3"> -->
 		 						<p>Recipe Name: <%= searchedRecipeList.get(i).getRecipeName() %></p>
 		 						<p>Category: <%= searchedRecipeList.get(i).getRecipeCategory() %></p>
 		 						<p>Time: <%= searchedRecipeList.get(i).getTimeToCook() %></p>

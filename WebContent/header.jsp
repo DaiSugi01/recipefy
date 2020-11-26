@@ -10,8 +10,8 @@
 			<div class="flex">
 				<select name="filter" class="text-gray-500 rounded p-1 mr-2">
 					<option value="">--Search Options--</option>	
-					<option value="ingredients">Ingredients</option>
 					<option value="categories">Categories</option>
+					<option value="ingredients">Ingredients</option>
 				</select>
 				<form action="searchResult" class="flex">
 					<input type="search" name="search" placeholder="Find a Recipe" class="w-full text-gray-500 rounded p-1 mr-2">

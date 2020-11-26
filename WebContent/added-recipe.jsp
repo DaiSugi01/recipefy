@@ -12,6 +12,5 @@
 			<h1 class="my-4 text-3xl font-bold">Recipe successfully added!</h1>
 		</div>
 	</div>
-	
 </body>
 </html>

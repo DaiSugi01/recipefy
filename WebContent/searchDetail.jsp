@@ -22,7 +22,7 @@
 		
 	<div class="w-screen h-screen">
 		<div class="w-full h-full flex justify-center items-center">
-			<div class="w-full h-2/3 grid grid-cols-2 bg-white bg-opacity-30 rounded shadow-md m-12 mt-20 p-6">
+			<div class="w-2/3 h-2/3 grid grid-cols-2 bg-white bg-opacity-30 rounded shadow-md mt-20 p-6">
 				
 				<!-- image column -->	
 				<div class="h-full bg-cover bg-center bg-no-repeat rounded" style="background-image: url(getImage)">
@@ -31,14 +31,14 @@
 				<div class="flex justify-center items-center">
 					<div class="p-6">
 						<h1 class="mb-8 text-3xl font-bold"><%= recipe.getRecipeName() %></h1>
-						<p>User: <%= recipe.getUserId() %></p>
+						<p>User ID: <%= recipe.getUserId() %></p>
 						<p>Created Date: <%= recipe.getCreatedDate() %></p>
 						<p>Category: <%= recipe.getRecipeCategory() %></p>
 						<p>Time: <%= recipe.getTimeToCook() %> mins</p>
 						<% for (IngredientsDto ing :ings) { 
 							if(!ing.getIngName().isEmpty()) {
 						%>
-								<p>Ingredients: <%= ing.getIngName() %></p>
+							<p>Ingredients: <%= ing.getIngName() %></p>
 							<% } %>
 						<% } %>
 						
