@@ -209,6 +209,8 @@ public class RecipeDao {
         try{
       
             String insertQuery = "INSERT INTO Recipe (recipe_name, recipe_image, recipe_category, time_to_cook, user_id) VALUES (?, ?, ?, ?, ?)";
+           
+            System.out.println("SQL" + insertQuery);
             
             preparedStatement = conn.prepareStatement(insertQuery);
             preparedStatement.setString(1, recipeName);

@@ -20,12 +20,12 @@
 			  	<label for="categories" class="text-xl">Category</label><br>
 			  	<select name="categories" class="w-full text-gray-500 rounded p-1 my-2" required>
 					<option value="">--Please choose an option--</option>
-					<option value="category">American</option>
-					<option value="category">Canadian</option>
-					<option value="category">Japanese</option>
-					<option value="category">Korean</option>
-					<option value="category">Mexican</option>
-					<option value="category">Others</option>
+					<option value="American">American</option>
+					<option value="Canadian">Canadian</option>
+					<option value="Japanese">Japanese</option>
+					<option value="Korean">Korean</option>
+					<option value="Mexican">Mexican</option>
+					<option value="Others">Others</option>
 				</select>
 			  	<label for="ingredients" class="text-xl">Ingredients</label><br>
 			  	<div class="flex justify-between">
@@ -42,10 +42,9 @@
 			  	<label for="times" class="text-xl">Time</label><br>
 			  	<select name="times" class="w-full text-gray-500 rounded p-1 my-2" required>
 					<option value="">--Please choose an option--</option>
-					<option value="time">0 - 15 min</option>
-					<option value="time">15 - 30 min</option>
-					<option value="time">30 - 60 min</option>
-					<option value="time">more than 60 min</option>
+					<option value="0 - 30 ">0 - 30 min</option>
+					<option value="30 - 60">30 - 60 min</option>
+					<option value="more than 60">more than 60 min</option>
 				</select>
 			  	<input type="submit" value="Add Recipe" class="bg-transparent hover:bg-red-500 border rounded p-1 px-2 my-2"><br>
 			</form>

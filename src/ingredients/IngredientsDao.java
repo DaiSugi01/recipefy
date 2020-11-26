@@ -60,7 +60,7 @@ public class IngredientsDao {
     				rs.close();
     			}
     		} catch (SQLException e) {
-    			e.printStackTrace();
+                System.out.println("selectIngredientsbyName error: " + e.getMessage());
     		}
     	}
     	
@@ -142,7 +142,7 @@ public class IngredientsDao {
     		}
     		
     	} catch (SQLException e) {
-    		System.out.println("Select recipe by kewyord error: " + e.getMessage());
+    		System.out.println("Select Ingredients by kewyord error: " + e.getMessage());
     	} finally {
     		try {
     			if(ppsmt != null) {
@@ -179,7 +179,7 @@ public class IngredientsDao {
             return (result == ings.size());
             
         }catch(Exception e){
-            System.out.println("Insert Recipe error: " + e.getMessage());
+            System.out.println("Insert Ingredients error: " + e.getMessage());
         }
         return false;
     }
