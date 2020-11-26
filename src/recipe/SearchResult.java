@@ -32,6 +32,9 @@ public class SearchResult extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		System.out.println("[SearchResult -- doGet] run");
+		
 		String keyword = request.getParameter("search");
 		DbHandler hander = DbHandler.getInstance();
 		ArrayList<RecipeDto> searchedRecipe = null;
@@ -45,6 +48,12 @@ public class SearchResult extends HttpServlet {
 		}
 		
 		request.setAttribute("searchedRecipes", searchedRecipe);
+		
+		for(RecipeDto r : searchedRecipe) {
+			System.out.println(r.getRecipeName());
+		}
+		
+		System.out.println(searchedRecipe != null && searchedRecipe.size() > 0);
 		System.out.println("[SearchResult -- doGet] finish");
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/searchResult.jsp");

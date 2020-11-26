@@ -31,7 +31,16 @@ public class Signup extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println("[Signup-doget] run");
+		RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
+		rd.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("[Signup-doPost] run");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		DbHandler handler = DbHandler.getInstance();
 		
@@ -48,31 +57,21 @@ public class Signup extends HttpServlet {
 		System.out.println(password);
 		
 		if (isEmpty(firstName, lastName, email, password)) {
-			RequestDispatcher rd = request.getRequestDispatcher("/signup-error.html");
+			RequestDispatcher rd = request.getRequestDispatcher("/signup-error.jsp");
 			rd.forward(request, response);
 		} else {
 			
 			UserDao user = new UserDao(handler.getConnection());
 			
 			if (user.insertUser(firstName, lastName, email, password)) {
-				RequestDispatcher rd = request.getRequestDispatcher("/login.html");
-				rd.forward(request, response);			
+				response.sendRedirect("login");
 			} else {
 				// error
-				RequestDispatcher rd = request.getRequestDispatcher("/signup-error.html");
+				RequestDispatcher rd = request.getRequestDispatcher("/signup-error.jsp");
 				rd.forward(request, response);
 			}
 		}
-		
-		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	
 	}
 
 	

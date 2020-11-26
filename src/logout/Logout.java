@@ -1,4 +1,4 @@
-package login;
+package logout;
 
 import java.io.IOException;
 
@@ -15,16 +15,16 @@ import user.UserDao;
 import user.UserDto;
 
 /**
- * Servlet implementation class Login2
+ * Servlet implementation class Logout
  */
-@WebServlet("/login")
-public class Login extends HttpServlet {
+@WebServlet("/logout")
+public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Logout() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,9 +34,14 @@ public class Login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("[login] run");
-		RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
-		rd.forward(request, response);	
+		System.out.println("[logout] run");
+		
+		HttpSession session = request.getSession();
+		session.removeAttribute("user");
+//		RequestDispatcher rd = request.getRequestDispatcher("/logout.jsp");
+//		rd.forward(request, response);
+		
+		response.sendRedirect("/java-group-project/logout.jsp");
 	}
 
 	/**
@@ -44,33 +49,7 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		DbHandler handler = DbHandler.getInstance();
-		
-		System.out.println("Success!");
-		
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-	
-		System.out.println(email);
-		System.out.println(password);
-		UserDao user = new UserDao(handler.getConnection());
-		
-		if (user.checkCredentials(email, password)) {
-			
-			UserDto userDto = user.selectUser(email, password);
-
-			HttpSession session = request.getSession();
-			session.setAttribute("user", userDto);
-			
-			response.sendRedirect("home");
-
-		} else {
-			// go to error
-			RequestDispatcher rd = request.getRequestDispatcher("/login-error.jsp");
-			rd.forward(request, response);	
-		};
-
+		doGet(request, response);
 	}
 
 }
