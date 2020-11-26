@@ -40,7 +40,7 @@ public class DirectionsDao {
             
             System.out.println("[DirectionsDao] selectDirectionsByRecipeId done");
         } catch (SQLException e) {
-        	System.out.println("[DirectionsDao]selectDirectionsByRecipeId error: " + e.getMessage());
+        	System.out.println("[DirectionsDao] selectDirectionsByRecipeId error: " + e.getMessage());
         } finally {
             try {
                 if(pstmt != null) {
@@ -57,25 +57,29 @@ public class DirectionsDao {
     	return directions;
     }
     
-    public boolean insertDirections(String directions, int recipe_id){
-        PreparedStatement preparedStatement = null;
-        System.out.println("[DirectionsDao] insertDirections run");
+    public boolean insertDirections(ArrayList<DirectionsDto> directions){
+        PreparedStatement ppst = null;
         
         try{
+        	
+        	String sql = "INSERT INTO Directions (direction, recipe_id) VALUES (?, ?)";
             
-            String insertQuery = "INSERT INTO Directions (direction, recipe_id) VALUES (?, ?)";
+            int result = 0;
+            for (DirectionsDto direction : directions) {
+                System.out.println(sql + ", value=" + direction.getDirection() + ", " + direction.getRecipeId());
+                ppst = conn.prepareStatement(sql);
+                ppst.setString(1, direction.getDirection());
+                ppst.setInt(2, direction.getRecipeId());
+                ppst.executeUpdate();
+                result++;
+                ppst = null;
+            }
             
-            preparedStatement = conn.prepareStatement(insertQuery);
-            preparedStatement.setString(1, directions);
-            preparedStatement.setInt(2, recipe_id);
-            
-            int result = preparedStatement.executeUpdate();
-            System.out.println("SQL: "+ insertQuery + ", "
-            		+ "value: directions=" + directions + ", recipe_id=" + recipe_id);
-            return (result == 1);
+            System.out.println("[DirectionsDao] insertDirections done");
+            return (result == directions.size());
             
         }catch(Exception e){
-            System.out.println("Insert Directions error: " + e.getMessage());
+        	System.out.println("[DirectionsDao] insertDirections error: " + e.getMessage());
         }
         return false;
     }

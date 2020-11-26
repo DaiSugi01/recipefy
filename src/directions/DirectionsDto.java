@@ -11,7 +11,7 @@ public class DirectionsDto {
 	private Date createdDate;
 	
 	public DirectionsDto(int dirId, String direction, int recipeId, Date createdDate) {
-		setDirection(direction);
+		setDirId(dirId);
 		setDirection(direction);
 		setRecipeId(recipeId);
 		setCreatedDate(createdDate);

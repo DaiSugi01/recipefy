@@ -1,16 +1,13 @@
 
 package recipe;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.Connection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,6 +21,7 @@ import javax.servlet.http.Part;
 
 import dbutil.DbHandler;
 import directions.DirectionsDao;
+import directions.DirectionsDto;
 import ingredients.IngredientsDao;
 import ingredients.IngredientsDto;
 import ingredients.RecipeIngredientsDao;
@@ -76,7 +74,6 @@ public class AddRecipe extends HttpServlet {
 		
 		String recipeName = request.getParameter("recipeName");		
 		String category = request.getParameter("categories");
-		String directions = request.getParameter("directions");
 		String timeToCook = request.getParameter("times");
 
 		ArrayList<IngredientsDto> ingList = new ArrayList<>();
@@ -88,67 +85,123 @@ public class AddRecipe extends HttpServlet {
 				break;
 			}
 			System.out.println("ingredient" + ingCount + ": " + ingredient);
-			int i = 0;
-			Date d = null;
-			ingList.add(new IngredientsDto(i, ingredient, d));
+			int tempId = 0;
+			Date tempDate = null;
+			ingList.add(new IngredientsDto(tempId, ingredient, tempDate));
 			ingCount++;
 			
 		} while (true);
 		
+		ArrayList<DirectionsDto> directionList = new ArrayList<>();
+		int dirCount = 1;
+		do {
+			String direction = request.getParameter("directions" + dirCount);
+			if (direction == null) {
+				break;
+			}
+			System.out.println("directions" + dirCount + ": " + direction);
+			int defaultId = 0;
+			Date tempDate = null;
+			directionList.add(new DirectionsDto(defaultId, direction, defaultId, tempDate));
+			dirCount++;
+			
+		} while (true);
 		
 		System.out.println(recipeName);
 		System.out.println(category);
 		System.out.println(ingList);
-		System.out.println(directions);
 		System.out.println(timeToCook);
 		
+		for (DirectionsDto dire : directionList) {
+			System.out.println(dire.getDirection());
+		}
+		
 		// Validation check
-		if (!isEmpty(recipeName, category, ingList, directions, timeToCook)) {
+		if (!isEmpty(recipeName, category, ingList, directionList, timeToCook)) {
 			byte[] recipeImage = cahngeImageToBinery(request);
-
-			DbHandler handler = DbHandler.getInstance();
-			RecipeDao recipeDao = new RecipeDao(handler.getConnection());
-
-			// Insert Recipe
-			if (!recipeDao.insertRecipe(recipeName, recipeImage, category, timeToCook, user.getId())) {
-				isError = true;
-			}
+			Connection conn = DbHandler.getInstance().getConnection();
 			
-			System.out.println("insertRecipe run " + isError);
+			try {
+				conn.setAutoCommit(false);
 			
-			// Insert Ingredients if not exists.
-			IngredientsDao ingDao = new IngredientsDao(handler.getConnection());
-			if (!isError) {
-				isError = insertIngredients(handler, ingList, ingDao);
-			}
-			System.out.println("insertIngredients run " + isError);
-						
-			int recipeId = 0;
-			if (!isError) {
-				try {
-					recipeId = getRecipeId(handler, user.getId());
-					System.out.println("getRecipeId run " + isError);
-					isError = insertdirections(handler, directions, recipeId);
-					System.out.println("insertdirections run " + isError);
-				} catch (SQLException e) {
+				RecipeDao recipeDao = new RecipeDao(conn);
+	
+				// Insert Recipe
+				if (!recipeDao.insertRecipe(recipeName, recipeImage, category, timeToCook, user.getId())) {
+					System.out.println("[AddRecipe] Insert Recipe error");
 					isError = true;
-					System.out.println("Insert Directions error: " + e.getMessage());
+				} else {
+					isError = false;
 				}
-			}
-			
-			// add RecipeIngredients
-			if (!isError) {
-				try {
-					RecipeIngredientsDao riDao = new RecipeIngredientsDao(handler.getConnection());
-					ArrayList<IngredientsDto> ingNames = ingDao.selectIngredientsbyName(ingList);
-					if(!riDao.insertRecipeIngredients(recipeId, ingNames)) {
-						System.out.println("insertRecipeIngredients error");
+				
+				System.out.println("insertRecipe run " + !isError);
+				
+				// Insert Ingredients if not exists.
+				IngredientsDao ingDao = new IngredientsDao(conn);
+				if (!isError) {
+					isError = insertIngredients(conn, ingList, ingDao);
+				}
+				System.out.println("insertIngredients run " + isError);
+							
+				int recipeId = 0;
+	
+				// Insert directions
+				if (!isError) {
+					try {
+						// get recipe id
+						recipeId = getRecipeId(conn, user.getId());
+						System.out.println("getRecipeId run " + isError);
+						
+						// set recipe id for each direction
+						for (DirectionsDto d : directionList) {
+							d.setRecipeId(recipeId);
+						}
+	
+						isError = insertdirections(conn, directionList);
+						System.out.println("insertdirections run " + isError);
+					} catch (SQLException e) {
+						isError = true;
+						System.out.println("Insert Directions error: " + e.getMessage());
 					}
-					System.out.println("insertRecipeIngredients run " + isError);
-
-				} catch (Exception e) {
-					isError = true;
-					System.out.println("Insert RecipeIngredients error: " + e.getMessage());
+				}
+				
+				// Insert RecipeIngredients
+				if (!isError) {
+					try {
+						RecipeIngredientsDao riDao = new RecipeIngredientsDao(conn);
+						ArrayList<IngredientsDto> ingNames = ingDao.selectIngredientsbyName(ingList);
+						if(!riDao.insertRecipeIngredients(recipeId, ingNames)) {
+							System.out.println("insertRecipeIngredients error");
+						}
+						System.out.println("insertRecipeIngredients run " + isError);
+	
+					} catch (Exception e) {
+						isError = true;
+						System.out.println("Insert RecipeIngredients error: " + e.getMessage());
+					}
+				}
+				
+				if (isError) {
+					conn.rollback();
+				} else {
+					conn.commit();					
+				}
+				
+			} catch (SQLException e1) {
+				System.out.println("[AddRecipe] error: " + e1.getMessage());
+				e1.printStackTrace();
+				try {
+					conn.rollback();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} finally {
+				try {
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (SQLException e) {
+						System.out.println("Connection close error: " + e.getMessage());
 				}
 			}
 
@@ -160,6 +213,7 @@ public class AddRecipe extends HttpServlet {
 			rd.forward(request, response);
 		} else {
 			System.out.println("[AddRecipe--doPost] finish widh error");
+			
 			RequestDispatcher rd = request.getRequestDispatcher("/add-recipe-failed.jsp");
 			rd.forward(request, response);
 		}
@@ -195,7 +249,8 @@ public class AddRecipe extends HttpServlet {
      * @param timeToCook
      * @return boolean value
      */
-    public boolean isEmpty(String recipeName, String category, ArrayList<IngredientsDto> ingList, String directions, String timeToCook) {
+    public boolean isEmpty(String recipeName, String category, ArrayList<IngredientsDto> ingList, 
+    		ArrayList<DirectionsDto> directionList, String timeToCook) {
     	if (recipeName == null || recipeName.isEmpty()) {
     		return true;
     	}
@@ -214,7 +269,7 @@ public class AddRecipe extends HttpServlet {
     	
     	System.out.println("ingList ok");
 
-    	if (directions == null || directions.isEmpty()) {
+    	if (directionList == null || directionList.size() == 0) {
     		return true;
     	}
     	
@@ -232,7 +287,8 @@ public class AddRecipe extends HttpServlet {
     }
     
     
-    public boolean insertIngredients(DbHandler handler, ArrayList<IngredientsDto> ingList, IngredientsDao ingDao) {
+    public boolean insertIngredients(Connection conn, ArrayList<IngredientsDto> ingList, IngredientsDao ingDao) {
+    	System.out.println("***********[ADDRecipe] insertIngredients run***********");
     	boolean isError = false;
     			
 		try {
@@ -257,19 +313,19 @@ public class AddRecipe extends HttpServlet {
 			isError = true;
 			System.out.println("[AddRecipe--doGet insert ingredients error: " + e.getMessage());
 		}	
-    	return false;
+    	return isError;
     }
 
-    public int getRecipeId(DbHandler handler, int userId) throws SQLException {
+    public int getRecipeId(Connection conn, int userId) throws SQLException {
     	
-    	RecipeDao recipeDao = new RecipeDao(handler.getConnection());
+    	RecipeDao recipeDao = new RecipeDao(conn);
     	RecipeDto recipe = recipeDao.selectRecipebyId(userId);
     	return recipe.getRecipeId();
     }
     
-    public boolean insertdirections(DbHandler handler, String directions, int recipeId) {
-    	DirectionsDao directionsDao = new DirectionsDao(handler.getConnection());
-    	return !directionsDao.insertDirections(directions, recipeId);
+    public boolean insertdirections(Connection conn, ArrayList<DirectionsDto> directions) {
+    	DirectionsDao directionsDao = new DirectionsDao(conn);
+    	return !directionsDao.insertDirections(directions);
     }
     	
 }
