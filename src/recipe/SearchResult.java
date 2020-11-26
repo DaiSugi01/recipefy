@@ -54,6 +54,7 @@ public class SearchResult extends HttpServlet {
 		try {
 			RecipeDao recipe = new RecipeDao(hander.getConnection());
 			searchedRecipe = recipe.selectRecipesbyKeyword(keyword);
+//			searchedRecipe = recipe.tempSelectRecipesbyKeyword(keyword);
 			
 		} catch (SQLException e) {
 			System.out.println("[SearchResult--doget] failed: " + e.getMessage());
