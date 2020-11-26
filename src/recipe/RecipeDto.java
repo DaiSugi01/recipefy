@@ -1,5 +1,6 @@
 package recipe;
 
+import java.awt.image.BufferedImage;
 import java.sql.Date;
 
 public class RecipeDto {
@@ -13,7 +14,7 @@ public class RecipeDto {
 	private Date updatedDate;
 	private Date createdDate;
 	
-	public RecipeDto(Integer recipeId, String recipeName, byte[] recipeImage ,
+	public RecipeDto(int recipeId, String recipeName, byte[] recipeImage ,
 			String recipeCategory, String timeToCook, int userId, Date updatedDate, Date createdDate) {
 		setRecipeId(recipeId);
 		setRecipeName(recipeName);

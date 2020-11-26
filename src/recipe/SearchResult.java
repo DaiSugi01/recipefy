@@ -3,11 +3,17 @@ package recipe;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
@@ -16,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dbutil.DbHandler;
 
@@ -31,7 +38,6 @@ public class SearchResult extends HttpServlet {
      */
     public SearchResult() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -44,44 +50,29 @@ public class SearchResult extends HttpServlet {
 		String keyword = request.getParameter("search");
 		DbHandler hander = DbHandler.getInstance();
 		ArrayList<RecipeDto> searchedRecipe = null;
-
-
 		
 		try {
 			RecipeDao recipe = new RecipeDao(hander.getConnection());
 			searchedRecipe = recipe.selectRecipesbyKeyword(keyword);
-
-			for (RecipeDto recipeDto : searchedRecipe) {
-//				response.setContentType("image/png");
-				OutputStream outputStream = response.getOutputStream();
-				BufferedImage img = deserializeImage(recipeDto.getRecipeImage());
-				ImageIO.write(img, "png", outputStream);
-				request.setAttribute("outputStream", outputStream);
-//				outputStream.flush();
-			}
 			
 		} catch (SQLException e) {
 			System.out.println("[SearchResult--doget] failed: " + e.getMessage());
 		}
 		
-		request.setAttribute("searchedRecipes", searchedRecipe);
-		
 		for(RecipeDto r : searchedRecipe) {
 			System.out.println(r.getRecipeName());
 		}
 		
-		System.out.println(searchedRecipe != null && searchedRecipe.size() > 0);
 		System.out.println("[SearchResult -- doGet] finish");
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/searchResult.jsp");
-		rd.forward(request, response);
+		HttpSession session = request.getSession();
+		session.setAttribute("searchedRecipes", searchedRecipe);
+		response.sendRedirect("searchResult.jsp");
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
