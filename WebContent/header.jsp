@@ -25,7 +25,7 @@
 		        <a class="mr-16 font-semibold" href="add-recipe.jsp">Add Recipe</a>
 			    <a class="font-semibold" href="logout">Logout</a>
 				<% } else { %>	
-		    	<a class="mr-16 font-semibold" href="index.jsp">Home</a>
+		    	<a class="mr-16 font-semibold" href="home">Home</a>
 		        <a class="mr-16 font-semibold" href="signup">Sign Up</a>
 			    <a class="font-semibold" href="login">Login</a>
 			    <% } %>

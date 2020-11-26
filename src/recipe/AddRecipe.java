@@ -94,6 +94,13 @@ public class AddRecipe extends HttpServlet {
 			
 		} while (true);
 		
+		
+		System.out.println(recipeName);
+		System.out.println(category);
+		System.out.println(ingList);
+		System.out.println(directions);
+		System.out.println(timeToCook);
+		
 		// Validation check
 		if (!isEmpty(recipeName, category, ingList, directions, timeToCook)) {
 			byte[] recipeImage = cahngeImageToBinery(request);
@@ -106,25 +113,32 @@ public class AddRecipe extends HttpServlet {
 				isError = true;
 			}
 			
+			System.out.println("insertRecipe run " + isError);
+			
 			// Insert Ingredients if not exists.
 			if (!isError) {
 				isError = insertIngredients(handler, ingList);
 			}
 			
+			System.out.println("insertIngredients run " + isError);
+			
 			if (!isError) {
 				int recipeId = 0;
 				try {
 					recipeId = getRecipeId(handler, user.getId());
+					System.out.println("getRecipeId run " + isError);
 					isError = insertdirections(handler, directions, recipeId);
+					System.out.println("insertdirections run " + isError);
 				} catch (SQLException e) {
 					System.out.println("Insert Directions error: " + e.getMessage());
 				}
 			}
+
 		}
 		
-		if (isError) {
+		if (!isError) {
 			System.out.println("[AddRecipe--doPost] finish widhout error");
-			RequestDispatcher rd = request.getRequestDispatcher("/add-recipe-success.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/added-recipe.jsp");
 			rd.forward(request, response);
 		} else {
 			System.out.println("[AddRecipe--doPost] finish widh error");
@@ -168,22 +182,34 @@ public class AddRecipe extends HttpServlet {
     		return true;
     	}
     	
+    	System.out.println("recipeName ok");
+    	
     	if (category == null || category.isEmpty()) {
     		return true;
     	}
+
+    	System.out.println("category ok");
     	
     	if (ingList == null || ingList.size() == 0) {
     		return true;
     	}
     	
+    	System.out.println("ingList ok");
+
     	if (directions == null || directions.isEmpty()) {
     		return true;
     	}
     	
+    	System.out.println("directions ok");
+
     	if (timeToCook == null || timeToCook.isEmpty()) {
     		return true;
     	}
-
+    	
+    	System.out.println("timeToCook ok");
+    	
+    	System.out.println("Validation ok");
+    	
     	return false;
     }
     
@@ -227,7 +253,7 @@ public class AddRecipe extends HttpServlet {
     
     public boolean insertdirections(DbHandler handler, String directions, int recipeId) {
     	DirectionsDao directionsDao = new DirectionsDao(handler.getConnection());
-    	return directionsDao.insertDirections(directions, recipeId);
+    	return !directionsDao.insertDirections(directions, recipeId);
     }
     	
 }

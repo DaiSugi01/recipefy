@@ -26,9 +26,9 @@
 				</select>
 			  	<label for="ingredients" class="text-xl">Ingredients</label><br>
 			  	<div class="flex justify-between">
-				  	<input type="text" name="ingredients" class="w-1/4 text-gray-500 rounded p-1 my-2" required>
-				  	<input type="text" name="ingredients" class="w-1/4 text-gray-500 rounded p-1 my-2" required>
-				  	<input type="text" name="ingredients" class="w-1/4 text-gray-500 rounded p-1 my-2" required>			  	
+				  	<input type="text" name="ingredients1" class="w-1/4 text-gray-500 rounded p-1 my-2" required>
+				  	<input type="text" name="ingredients2" class="w-1/4 text-gray-500 rounded p-1 my-2" required>
+				  	<input type="text" name="ingredients3" class="w-1/4 text-gray-500 rounded p-1 my-2" required>			  	
 			  	</div>
 			  	<label for="directions" class="text-xl">Directions</label><br>
 			  	<div class="flex">
