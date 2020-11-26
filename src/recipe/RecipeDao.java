@@ -1,5 +1,9 @@
 package recipe;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -7,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class RecipeDao {
 
@@ -16,10 +22,16 @@ public class RecipeDao {
 		this.conn = conn;
 	}
 
-	public RecipeDto getColumn(ResultSet rs) throws SQLException {
+	public RecipeDto getColumn(ResultSet rs) throws SQLException, IOException {
 		int recipeId = rs.getInt("recipe_id");
 		String recipeName = rs.getString("recipe_name");
+		
 		byte[] recipeImage = rs.getBytes("recipe_image");
+		
+//		InputStream is = rs.getBinaryStream("recipe_image");
+//		BufferedInputStream bis = new BufferedInputStream(is);
+//		BufferedImage recipeImage = ImageIO.read(bis);
+		
 		String recipeCategory = rs.getString("recipe_category");
 		String timeToCook = rs.getString("time_to_cook");
 		int userId = rs.getInt("user_id");
@@ -48,7 +60,7 @@ public class RecipeDao {
     			recipes.add(getColumn(rs));
     		}
     		
-    	} catch (SQLException e) {
+    	} catch (SQLException | IOException e) {
 			System.out.println("Select recipe error: " + e.getMessage());
 		} finally {
             try {
@@ -89,7 +101,7 @@ public class RecipeDao {
     			recipes.add(getColumn(rs));
     		}
     		
-    	} catch (SQLException e) {
+    	} catch (SQLException | IOException e) {
     		System.out.println("Select recipe by kewyord error: " + e.getMessage());
     	} finally {
     		try {
@@ -109,8 +121,8 @@ public class RecipeDao {
 
     
     public RecipeDto selectRecipebyId(int userId) throws SQLException {
-    	String query = "SELECT * FROM Recipe WHERE user_id = ? ORDER BY created_date LIMIT 1";
-    	
+    	String query = "SELECT * FROM Recipe WHERE user_id = ? ORDER BY created_date DESC LIMIT 1";
+    	System.out.println("SQL: " + query + ", value=" + userId);
     	PreparedStatement ppsmt = null;
     	ResultSet rs = null;
     	RecipeDto recipe = null;
@@ -124,7 +136,7 @@ public class RecipeDao {
     			recipe = (getColumn(rs));
     		}
     		
-    	} catch (SQLException e) {
+    	} catch (SQLException | IOException e) {
     		System.out.println("Select recipe by kewyord error: " + e.getMessage());
     	} finally {
     		try {
@@ -171,4 +183,38 @@ public class RecipeDao {
         return false;
     }
 
+    public RecipeDto selectRecipebyRecipeId(int recipeId) throws SQLException {
+    	String query = "SELECT * FROM Recipe WHERE recipe_id = ?";
+    	
+    	PreparedStatement ppsmt = null;
+    	ResultSet rs = null;
+    	RecipeDto recipe = null;
+    	
+    	try {
+    		ppsmt =conn.prepareStatement(query);
+    		ppsmt.setInt(1, recipeId);
+    		rs = ppsmt.executeQuery();
+    		
+    		while (rs.next()) {
+    			recipe = (getColumn(rs));
+    		}
+    		
+    	} catch (SQLException | IOException e) {
+    		System.out.println("Select recipe by kewyord error: " + e.getMessage());
+    	} finally {
+    		try {
+    			if(ppsmt != null) {
+    				ppsmt.close();
+    			}
+    			if(rs != null) {
+    				rs.close();
+    			}
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	
+    	return recipe;
+    	
+    }
 }

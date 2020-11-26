@@ -17,12 +17,13 @@ public class DirectionsDao {
 		this.conn = conn;
 	}
 	
-    public ArrayList<IngredientsDto> selectDirections(int recipeId) {
+    public ArrayList<DirectionsDto> selectDirectionsByRecipeId(int recipeId) {
     	String query = 
     			"SELECT * FROM Directions WHERE recipe_id = ? ORDER BY dir_id";
+    	System.out.println("SQL" + ": " + query + ", value=" + recipeId);
     	PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<IngredientsDto> directions = new ArrayList<>();
+        ArrayList<DirectionsDto> directions = new ArrayList<>();
 
         try {
             pstmt = conn.prepareStatement(query);
@@ -30,14 +31,16 @@ public class DirectionsDao {
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
-                int ingId = rs.getInt("dir_id");
-                String ingName = rs.getString("direction");
+                int dirId = rs.getInt("dir_id");
+                String dirName = rs.getString("direction");
+                int returnedRecipeId = rs.getInt("recipe_id");
                 Date createdDate = rs.getDate("created_date");
-                directions.add(new IngredientsDto(ingId, ingName, createdDate));
+                directions.add(new DirectionsDto(dirId, dirName, returnedRecipeId, createdDate));
             }
-
+            
+            System.out.println("[DirectionsDao] selectDirectionsByRecipeId done");
         } catch (SQLException e) {
-            e.printStackTrace();
+        	System.out.println("[DirectionsDao]selectDirectionsByRecipeId error: " + e.getMessage());
         } finally {
             try {
                 if(pstmt != null) {

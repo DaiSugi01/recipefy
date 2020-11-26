@@ -26,6 +26,7 @@ import dbutil.DbHandler;
 import directions.DirectionsDao;
 import ingredients.IngredientsDao;
 import ingredients.IngredientsDto;
+import ingredients.RecipeIngredientsDao;
 import user.UserDto;
 
 /**
@@ -116,21 +117,38 @@ public class AddRecipe extends HttpServlet {
 			System.out.println("insertRecipe run " + isError);
 			
 			// Insert Ingredients if not exists.
+			IngredientsDao ingDao = new IngredientsDao(handler.getConnection());
 			if (!isError) {
-				isError = insertIngredients(handler, ingList);
+				isError = insertIngredients(handler, ingList, ingDao);
 			}
-			
 			System.out.println("insertIngredients run " + isError);
-			
+						
+			int recipeId = 0;
 			if (!isError) {
-				int recipeId = 0;
 				try {
 					recipeId = getRecipeId(handler, user.getId());
 					System.out.println("getRecipeId run " + isError);
 					isError = insertdirections(handler, directions, recipeId);
 					System.out.println("insertdirections run " + isError);
 				} catch (SQLException e) {
+					isError = true;
 					System.out.println("Insert Directions error: " + e.getMessage());
+				}
+			}
+			
+			// add RecipeIngredients
+			if (!isError) {
+				try {
+					RecipeIngredientsDao riDao = new RecipeIngredientsDao(handler.getConnection());
+					ArrayList<IngredientsDto> ingNames = ingDao.selectIngredientsbyName(ingList);
+					if(!riDao.insertRecipeIngredients(recipeId, ingNames)) {
+						System.out.println("insertRecipeIngredients error");
+					}
+					System.out.println("insertRecipeIngredients run " + isError);
+
+				} catch (Exception e) {
+					isError = true;
+					System.out.println("Insert RecipeIngredients error: " + e.getMessage());
 				}
 			}
 
@@ -214,11 +232,9 @@ public class AddRecipe extends HttpServlet {
     }
     
     
-    public boolean insertIngredients(DbHandler handler, ArrayList<IngredientsDto> ingList) {
+    public boolean insertIngredients(DbHandler handler, ArrayList<IngredientsDto> ingList, IngredientsDao ingDao) {
     	boolean isError = false;
-    	
-		IngredientsDao ingDao = new IngredientsDao(handler.getConnection());
-		
+    			
 		try {
 			ArrayList<IngredientsDto> newIngs = ingDao.checkIngredients(ingList);
 			
