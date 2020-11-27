@@ -31,50 +31,39 @@
 				<div class="flex justify-center items-center">
 					<div class="p-6">
 						<h1 class="mb-8 text-3xl font-bold"><%= recipe.getRecipeName() %></h1>
-						<p>User ID: <%= recipe.getUserId() %></p>
 						<p>Created Date: <%= recipe.getCreatedDate() %></p>
 						<p>Category: <%= recipe.getRecipeCategory() %></p>
 						<p>Time: <%= recipe.getTimeToCook() %> mins</p>
-						<% for (IngredientsDto ing :ings) { 
-							if(!ing.getIngName().isEmpty()) {
-						%>
-							<p>Ingredients: <%= ing.getIngName() %></p>
+
+						<p>Ingredients:</p>
+						<div class="ml-6">
+							<ul class="list-disc">
+							<% for (IngredientsDto ing :ings) { 
+								if(!ing.getIngName().isEmpty()) {
+							%>
+								<li><%= ing.getIngName() %></li>
+								<% } %>
 							<% } %>
-						<% } %>
+							</ul>
+						</div>
 						
-						<% for (DirectionsDto dire :dires) { %>
-							<p>Directions: <%= dire.getDirection() %></p>
-						<% } %>
+						<p>Directions:</p>
+						<div class="ml-6">
+							<ul class="list-decimal">
+							<% for (DirectionsDto dire :dires) {
+								if(!dire.getDirection().isEmpty()) {
+							%>
+								<li><%= dire.getDirection() %></li>
+								<% } %>
+							<% } %>
+							</ul>
+						</div>
 					</div>
 				</div>
 				
 			</div>
 		</div>	
 	</div>
-	
-
-<%-- 	
-					<% if (recipe != null) { %>
-						<div class="bg-white bg-opacity-30 rounded p-6 mb-6">
-							<img src="getImage" alt="image" class="w-full rounded mb-3">
-							<p><%= recipe.getRecipeName() %></p>
-							<p><%= recipe.getRecipeCategory() %></p>
-							<p><%= recipe.getCreatedDate() %></p>
-							<p><%= recipe.getTimeToCook() %></p>
-							
-							<p>---------------Ingredients----------------</p>
-							<c:foreach var="ing" items="${ings} ">
-								<c:out value="${ing.name}"/>
-							</c:foreach>
-
-							<p>---------------Directions----------------</p>
-							<c:foreach var="dir" items="${dires} ">
-								<c:out value="${dir.name}"/>
-							</c:foreach>
-						</div>
-					<% } %>
-
-	</div> --%>
 
 </body>
 </html>
