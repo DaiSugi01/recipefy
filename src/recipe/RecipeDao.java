@@ -17,10 +17,26 @@ import javax.imageio.ImageIO;
 public class RecipeDao {
 
 	private final Connection conn;
+	private final String CATE_JAPANESE = "Japanese";
 
 	public RecipeDao(Connection conn) {
 		this.conn = conn;
 	}
+	
+	public RecipeDto getColumn(ResultSet rs) throws SQLException, IOException {
+		int recipeId = rs.getInt("recipe_id");
+		String recipeName = rs.getString("recipe_name");
+		byte[] recipeImage = rs.getBytes("recipe_image");		
+		String recipeCategory = rs.getString("recipe_category");
+		String timeToCook = rs.getString("time_to_cook");
+		int userId = rs.getInt("user_id");
+		Date updatedDate = rs.getDate("updated_date");
+		Date createdDate = rs.getDate("created_date");
+		return new RecipeDto(recipeId, recipeName, recipeImage, 
+				recipeCategory, timeToCook, userId, updatedDate, createdDate);
+
+	}
+	
 
     /**
      * this medhod is deleted and replaced with selectRecipesbyKeyword in the future
@@ -63,27 +79,6 @@ public class RecipeDao {
     }
 
     
-
-    
-	public RecipeDto getColumn(ResultSet rs) throws SQLException, IOException {
-		int recipeId = rs.getInt("recipe_id");
-		String recipeName = rs.getString("recipe_name");
-		
-		byte[] recipeImage = rs.getBytes("recipe_image");
-		
-//		InputStream is = rs.getBinaryStream("recipe_image");
-//		BufferedInputStream bis = new BufferedInputStream(is);
-//		BufferedImage recipeImage = ImageIO.read(bis);
-		
-		String recipeCategory = rs.getString("recipe_category");
-		String timeToCook = rs.getString("time_to_cook");
-		int userId = rs.getInt("user_id");
-		Date updatedDate = rs.getDate("updated_date");
-		Date createdDate = rs.getDate("created_date");
-		return new RecipeDto(recipeId, recipeName, recipeImage, 
-				recipeCategory, timeToCook, userId, updatedDate, createdDate);
-
-	}
     /**
      * select data from Recipes table
      * @return data set of Recipe table
@@ -127,7 +122,7 @@ public class RecipeDao {
      * @return data set of Recipe table
      * @throws SQLException
      */
-    public ArrayList<RecipeDto> selectRecipesbyKeyword(String keyword) throws SQLException {
+    public ArrayList<RecipeDto> selectRecipesByKeyword(String keyword) throws SQLException {
     	String query = "SELECT * FROM Recipe WHERE recipe_name like ? ORDER BY created_date DESC";
     	keyword = "%" + keyword + "%";
 
@@ -162,6 +157,59 @@ public class RecipeDao {
     	return recipes;
     }
 
+    
+    /**
+     * select data from Recipes table by keyword
+     * @return data set of Recipe table
+     * @throws SQLException
+     */
+    public ArrayList<RecipeDto> selectRecipesByIngredients(String ingName) throws SQLException {
+    	StringBuilder query = new StringBuilder();
+    	
+    	query.append("SELECT ");
+    	query.append("    R.* ");
+    	query.append("FROM ");
+    	query.append("    RecipeIngredients as RI ");
+    	query.append("INNER JOIN Recipe as R on ");
+    	query.append("	RI.recipe_id = R.recipe_id ");
+    	query.append("INNER JOIN Ingredients as I on ");
+    	query.append("	RI.ing_id = I.ing_id ");
+    	query.append("WHERE");
+    	query.append("	I.ing_name = ? ");
+    	
+    	PreparedStatement ppsmt = null;
+    	ResultSet rs = null;
+    	ArrayList<RecipeDto> recipes = new ArrayList<>();
+    	
+    	try {
+    		ppsmt =conn.prepareStatement(query.toString());
+    		ppsmt.setString(1, ingName);
+    		
+    		System.out.println("SQL: " + query.toString() + ", value=" + ingName);
+    		rs = ppsmt.executeQuery();
+    		
+    		while (rs.next()) {
+    			recipes.add(getColumn(rs));
+    		}
+    		
+    	} catch (SQLException | IOException e) {
+    		System.out.println("Select recipe by ingredients error: " + e.getMessage());
+    	} finally {
+    		try {
+    			if(ppsmt != null) {
+    				ppsmt.close();
+    			}
+    			if(rs != null) {
+    				rs.close();
+    			}
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	
+    	return recipes;
+    }
+    
     
     public RecipeDto selectRecipebyId(int userId) throws SQLException {
     	String query = "SELECT * FROM Recipe WHERE user_id = ? ORDER BY created_date DESC LIMIT 1";

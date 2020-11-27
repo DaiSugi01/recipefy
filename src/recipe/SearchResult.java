@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -32,6 +33,9 @@ import dbutil.DbHandler;
 @WebServlet("/searchResult")
 public class SearchResult extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private final String RECIPE_NAME = "recipeName";
+	private final String INGREDIENTS = "ingredients";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,35 +43,55 @@ public class SearchResult extends HttpServlet {
     public SearchResult() {
         super();
     }
-
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		System.out.println("[SearchResult -- doGet] run");
+		System.out.println("********** [SearchResult--doGet] start **********");
 		
-		String keyword = request.getParameter("search");
 		DbHandler hander = DbHandler.getInstance();
+		Connection conn = hander.getConnection();
+
+		String keyword = request.getParameter("search");
 		ArrayList<RecipeDto> searchedRecipe = null;
-		
+
 		try {
 			RecipeDao recipe = new RecipeDao(hander.getConnection());
-			searchedRecipe = recipe.selectRecipesbyKeyword(keyword);
 //			searchedRecipe = recipe.tempSelectRecipesbyKeyword(keyword);
 			
+			String opt = request.getParameter("filter");
+			
+			switch (opt) {
+				case INGREDIENTS:
+					searchedRecipe = recipe.selectRecipesByIngredients(keyword);					
+					break;
+				default:
+					searchedRecipe = recipe.selectRecipesByKeyword(keyword);
+			}			
+		
+			for(RecipeDto r : searchedRecipe) {
+				System.out.println(r.getRecipeName());
+			}
+
+			HttpSession session = request.getSession();
+			session.setAttribute("searchedRecipes", searchedRecipe);
+			response.sendRedirect("searchResult.jsp");
+
 		} catch (SQLException e) {
 			System.out.println("[SearchResult--doget] failed: " + e.getMessage());
-		}
-		
-		for(RecipeDto r : searchedRecipe) {
-			System.out.println(r.getRecipeName());
-		}
-		
-		System.out.println("[SearchResult -- doGet] finish");
-		HttpSession session = request.getSession();
-		session.setAttribute("searchedRecipes", searchedRecipe);
-		response.sendRedirect("searchResult.jsp");
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					System.out.println("[SearchResult--doget] Conneciton close failed: " + e.getMessage());
+					e.printStackTrace();
+				}				
+			}
+		}		
+		System.out.println("********** [SearchResult--doGet] done **********");
 	}
 
 	/**

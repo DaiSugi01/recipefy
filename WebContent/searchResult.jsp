@@ -30,7 +30,6 @@
  					<% 
 			   			if (searchedRecipeList != null && searchedRecipeList.size() > 0) {			   			
  							for (int i = 0; i < searchedRecipeList.size(); i++) {
-								System.out.println("JSP run");
 								session.setAttribute("recipe", searchedRecipeList.get(i));
 				   				String recipeNameWithComma = searchedRecipeList.get(i).getRecipeName().trim().replaceAll(" ", ",");
 					%>
