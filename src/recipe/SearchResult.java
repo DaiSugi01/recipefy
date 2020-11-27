@@ -91,13 +91,19 @@ public class SearchResult extends HttpServlet {
 		doGet(request, response);
 	}
 
-	public BufferedImage deserializeImage(byte[] recipeImage) throws IOException {
-      InputStream inputStream = new ByteArrayInputStream(recipeImage);
-
-      BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-      BufferedImage img = ImageIO.read(bufferedInputStream);
-      
-      return img;
-
-	}
+	/**
+	 * 
+	 * @param recipeImage
+	 * @return
+	 * @throws IOException
+	 */
+//	public BufferedImage deserializeImage(byte[] recipeImage) throws IOException {
+//      InputStream inputStream = new ByteArrayInputStream(recipeImage);
+//
+//      BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+//      BufferedImage img = ImageIO.read(bufferedInputStream);
+//      
+//      return img;
+//
+//	}
 }

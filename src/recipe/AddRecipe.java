@@ -35,6 +35,7 @@ import user.UserDto;
 public class AddRecipe extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -42,6 +43,7 @@ public class AddRecipe extends HttpServlet {
         super();
     }
 
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -59,6 +61,7 @@ public class AddRecipe extends HttpServlet {
 
 	}
 
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -284,8 +287,8 @@ public class AddRecipe extends HttpServlet {
     	
     	return false;
     }
-    
-    
+
+
     public boolean insertIngredients(Connection conn, ArrayList<IngredientsDto> ingList, IngredientsDao ingDao) {
     	System.out.println("***********[ADDRecipe] insertIngredients run***********");
     	boolean isError = false;
@@ -318,7 +321,7 @@ public class AddRecipe extends HttpServlet {
     public int getRecipeId(Connection conn, int userId) throws SQLException {
     	
     	RecipeDao recipeDao = new RecipeDao(conn);
-    	RecipeDto recipe = recipeDao.selectRecipebyId(userId);
+    	RecipeDto recipe = recipeDao.selectRecipebyUserId(userId);
     	return recipe.getRecipeId();
     }
     

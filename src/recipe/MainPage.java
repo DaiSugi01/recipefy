@@ -1,6 +1,7 @@
 package recipe;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -10,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dbutil.DbHandler;
 
@@ -32,26 +32,37 @@ public class MainPage extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("[MainPage -- doGet] start");
+
+		System.out.println("********** [MainPage-doGet] start **********");
 		
 		ArrayList<RecipeDto> recipes = new ArrayList<>();
 
+		Connection conn = DbHandler.getInstance().getConnection();
 		try {
-			DbHandler hander = DbHandler.getInstance();
-			RecipeDao recipeDao = new RecipeDao(hander.getConnection());
+
+			RecipeDao recipeDao = new RecipeDao(conn);
 			recipes = recipeDao.selectRecipes();
 			
-
 		} catch (SQLException e) {
-			System.out.println("[MainPage - doget()] Couldn't get data from recipes table");
+			System.out.println("[MainPage--doGet] Couldn't get data from recipes table");
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					System.out.println("[MainPage--doget] connection close error: " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
 		}
 
 		request.setAttribute("recipes", recipes);
-		System.out.println("[MainPage -- doGet] finish");
 
 		RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
 		rd.forward(request, response);
-	}
+
+		System.out.println("********** [MainPage-doGet] finish **********");
+}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

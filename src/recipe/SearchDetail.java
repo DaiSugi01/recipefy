@@ -1,6 +1,7 @@
 package recipe;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -36,52 +37,55 @@ public class SearchDetail extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
-		System.out.println("[SearchDetail--doget] run");
+		System.out.println("********** [SearchDetail-doGet] start **********");
+
 		int recipeIdIdx = request.getRequestURI().lastIndexOf("/") + 1;
 		int recipeId = Integer.parseInt(request.getRequestURI().substring(recipeIdIdx));
+		
+		Connection conn = DbHandler.getInstance().getConnection();
 		RecipeDto recipeDto = null;
 		ArrayList<IngredientsDto> ings = new ArrayList<>();
 		ArrayList<DirectionsDto> dires = new ArrayList<>();
 		
 		try {
-			DbHandler handler = DbHandler.getInstance();
 			
-			// get recipe data
-			RecipeDao recipe = new RecipeDao(handler.getConnection());
+			// Get recipe data
+			RecipeDao recipe = new RecipeDao(conn);
 			recipeDto = recipe.selectRecipebyRecipeId(recipeId);
-			System.out.println("[SearchDetail--doget] selectRecipebyRecipeId run");
+			System.out.println("[SearchDetail--doGet] selectRecipebyRecipeId run");
 			
-			// get ingredients data
-			IngredientsDao ingDao = new IngredientsDao(handler.getConnection());
+			// Get ingredients data
+			IngredientsDao ingDao = new IngredientsDao(conn);
 			ings = ingDao.selectIngredientsByRecipeId(recipeId);
-			System.out.println("[SearchDetail--doget] selectIngredients run");
+			System.out.println("[SearchDetail--doGet] selectIngredients run");
 			for (IngredientsDto i : ings) {
 				System.out.println(i.getIngName());
 			}
 			
-			// get direction data
-			DirectionsDao dire = new DirectionsDao(handler.getConnection());
+			// Get direction data
+			DirectionsDao dire = new DirectionsDao(conn);
 			dires = dire.selectDirectionsByRecipeId(recipeId);
-			System.out.println("[SearchDetail--doget] selectDirectionsByRecipeId run");
-			
-			for (DirectionsDto d : dires) {
-				System.out.println(d.getDirection());
-			}
-			
+			System.out.println("[SearchDetail--doGet] selectDirectionsByRecipeId run");
+						
 		} catch (SQLException e) {
-			System.out.println("[SearchDetail--doget] failed: " + e.getMessage());
+			System.out.println("[SearchDetail--doGet] failed: " + e.getMessage());
 		}		
 		
 		System.out.println("[SearchDetail--doget] finish");
 		HttpSession session = request.getSession();
+		
 		if (session.getAttribute("recipe") != null) {
 			session.removeAttribute("recipe");
 		}
+		
 		session.setAttribute("recipe", recipeDto);
 		session.setAttribute("ings", ings);
 		session.setAttribute("dires", dires);
 
 		response.sendRedirect("/java-group-project/searchDetail.jsp");
+		
+		System.out.println("********** [SearchDetail-doGet] finish **********");
+
 	}
 
 	/**
