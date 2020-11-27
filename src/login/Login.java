@@ -37,7 +37,7 @@ public class Login extends HttpServlet {
 
 		System.out.println("********** [Login-doGet] start **********");
 
-		RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 		rd.forward(request, response);	
 		
 		System.out.println("********** [Login-doGet] finish **********");

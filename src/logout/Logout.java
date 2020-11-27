@@ -34,7 +34,7 @@ public class Logout extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.removeAttribute("user");
 		
-		response.sendRedirect("/java-group-project/logout.jsp");
+		response.sendRedirect("logout.jsp");
 
 		System.out.println("********** [Logout-doGet] finish **********");
 }

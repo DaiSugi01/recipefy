@@ -79,7 +79,7 @@ public class SearchDetail extends HttpServlet {
 		session.setAttribute("ings", ings);
 		session.setAttribute("dires", dires);
 
-		response.sendRedirect("/java-group-project/searchDetail.jsp");
+		response.sendRedirect("searchDetail.jsp");
 		
 		System.out.println("********** [SearchDetail-doGet] finish **********");
 

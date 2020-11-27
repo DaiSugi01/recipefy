@@ -57,7 +57,7 @@ public class AddRecipe extends HttpServlet {
 		if (user == null) {
 			response.sendRedirect("login");
 		} else {
-			RequestDispatcher rd = request.getRequestDispatcher("/add-recipe.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("add-recipe.jsp");
 			rd.forward(request, response);			
 		}
 
@@ -208,12 +208,12 @@ public class AddRecipe extends HttpServlet {
 		
 		if (!isError) {
 			System.out.println("[AddRecipe--doPost] finish widhout error");
-			RequestDispatcher rd = request.getRequestDispatcher("/added-recipe.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("added-recipe.jsp");
 			rd.forward(request, response);
 		} else {
 			System.out.println("[AddRecipe--doPost] finish widh error");
 			
-			RequestDispatcher rd = request.getRequestDispatcher("/add-recipe-failed.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("add-recipe-failed.jsp");
 			rd.forward(request, response);
 		}
 		
