@@ -69,6 +69,7 @@ public class SearchDetail extends HttpServlet {
 			for (DirectionsDto d : dires) {
 				System.out.println(d.getDirection());
 			}
+			
 		} catch (SQLException e) {
 			System.out.println("[SearchDetail--doget] failed: " + e.getMessage());
 		}		

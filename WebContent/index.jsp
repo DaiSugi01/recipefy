@@ -39,15 +39,16 @@
 				   	</a>
 					<% } %>
 					<% } else { %>
-						<p class="my-8">We don't have any recipes yet.</p>
-						
-						<% if (userDto == null) { %>
-							<button class="bg-transparent hover:bg-red-500 text-xl border rounded p-1 px-2">
-								<a href="signup">Join Us Today!</a>
-							</button>
-						<% } %>		
+						<p class="my-8">We don't have any recipes yet.</p>						
 					<% } %>
-				</div>
+					
+					<% if (userDto == null) { %>
+						<button class="bg-transparent hover:bg-red-500 text-xl border rounded p-1 px-2">
+							<a href="signup">Join Us Today!</a>
+						</button>
+					<% } %>		
+					
+				</div> 
 			</div>
 		</div>
 	</div>
