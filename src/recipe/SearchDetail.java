@@ -58,9 +58,6 @@ public class SearchDetail extends HttpServlet {
 			IngredientsDao ingDao = new IngredientsDao(conn);
 			ings = ingDao.selectIngredientsByRecipeId(recipeId);
 			System.out.println("[SearchDetail--doGet] selectIngredients run");
-			for (IngredientsDto i : ings) {
-				System.out.println(i.getIngName());
-			}
 			
 			// Get direction data
 			DirectionsDao dire = new DirectionsDao(conn);

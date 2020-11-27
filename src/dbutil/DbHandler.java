@@ -23,12 +23,14 @@ public class DbHandler {
 	
 	public Connection getConnection() {
 		try {
+
 			Class.forName(DBConfig.DRIVER);
 			conn = DriverManager.getConnection(DBConfig.URL, DBConfig.USER, DBConfig.PASSWORD);
-			System.out.println("Connected!");
+
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("[DBHandler] connection failed: " + e.getMessage());
 		}
+		
 		return  conn;
 	}
 	

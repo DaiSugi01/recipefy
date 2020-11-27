@@ -50,7 +50,6 @@ public class ImageServlet extends HttpServlet {
 			OutputStream outputStream = response.getOutputStream();
 			ImageIO.write(img, "png", outputStream);
 			outputStream.flush();
-			System.out.println("[ImageSevlet--doget] finish");
 
 			session.removeAttribute("recipe");
 			

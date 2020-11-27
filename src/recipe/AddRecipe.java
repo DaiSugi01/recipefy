@@ -49,6 +49,8 @@ public class AddRecipe extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		System.out.println("********** [AddRecipe-doGet] start **********");
+
 		HttpSession session = request.getSession();
 		UserDto user = (UserDto)session.getAttribute("user");
 
@@ -59,6 +61,7 @@ public class AddRecipe extends HttpServlet {
 			rd.forward(request, response);			
 		}
 
+		System.out.println("********** [AddRecipe-doGet] finish **********");
 	}
 
 	
@@ -67,9 +70,9 @@ public class AddRecipe extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("[AddRecipe--doPost] run");
+		System.out.println("********** [AddRecipe-doPost] start **********");
 		
-		boolean isError = true;
+		boolean isError = false;
 		
 		HttpSession session = request.getSession();
 		UserDto user = (UserDto)session.getAttribute("user");
@@ -83,7 +86,6 @@ public class AddRecipe extends HttpServlet {
 		do {
 			String ingredient = request.getParameter("ingredients" + ingCount);
 			if (ingredient == null) {
-				System.out.println("break!!");
 				break;
 			}
 			System.out.println("ingredient" + ingCount + ": " + ingredient);
@@ -109,11 +111,6 @@ public class AddRecipe extends HttpServlet {
 			
 		} while (true);
 		
-		System.out.println(recipeName);
-		System.out.println(category);
-		System.out.println(ingList);
-		System.out.println(timeToCook);
-		
 		for (DirectionsDto dire : directionList) {
 			System.out.println(dire.getDirection());
 		}
@@ -136,14 +133,14 @@ public class AddRecipe extends HttpServlet {
 					isError = false;
 				}
 				
-				System.out.println("insertRecipe run " + !isError);
+				System.out.println("[AddRecipe] insertRecipe run " + !isError);
 				
 				// Insert Ingredients if not exists.
 				IngredientsDao ingDao = new IngredientsDao(conn);
 				if (!isError) {
 					isError = insertIngredients(conn, ingList, ingDao);
 				}
-				System.out.println("insertIngredients run " + isError);
+				System.out.println("[AddRecipe] insertIngredients run " + isError);
 							
 				int recipeId = 0;
 	
@@ -160,10 +157,10 @@ public class AddRecipe extends HttpServlet {
 						}
 	
 						isError = insertdirections(conn, directionList);
-						System.out.println("insertdirections run " + isError);
+						System.out.println("[AddRecipe] insertdirections run " + isError);
 					} catch (SQLException e) {
 						isError = true;
-						System.out.println("Insert Directions error: " + e.getMessage());
+						System.out.println("[AddRecipe] Insert Directions error: " + e.getMessage());
 					}
 				}
 				
@@ -173,13 +170,13 @@ public class AddRecipe extends HttpServlet {
 						RecipeIngredientsDao riDao = new RecipeIngredientsDao(conn);
 						ArrayList<IngredientsDto> ingNames = ingDao.selectIngredientsbyName(ingList);
 						if(!riDao.insertRecipeIngredients(recipeId, ingNames)) {
-							System.out.println("insertRecipeIngredients error");
+							System.out.println("[AddRecipe] insertRecipeIngredients error");
 						}
-						System.out.println("insertRecipeIngredients run " + isError);
+						System.out.println("[AddRecipe] insertRecipeIngredients run " + isError);
 	
 					} catch (Exception e) {
 						isError = true;
-						System.out.println("Insert RecipeIngredients error: " + e.getMessage());
+						System.out.println("[AddRecipe] Insert RecipeIngredients error: " + e.getMessage());
 					}
 				}
 				
@@ -219,6 +216,8 @@ public class AddRecipe extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/add-recipe-failed.jsp");
 			rd.forward(request, response);
 		}
+		
+		System.out.println("********** [AddRecipe-doPost] finish **********");
 	}
 
 	
@@ -227,7 +226,6 @@ public class AddRecipe extends HttpServlet {
 		InputStream inputStream = part.getInputStream();
 
         byte[] byteImage = convertInputStreamToByteArray(inputStream);
-        System.out.println(byteImage.length);
         return byteImage;
 	}
 	
@@ -253,6 +251,8 @@ public class AddRecipe extends HttpServlet {
      */
     public boolean isEmpty(String recipeName, String category, ArrayList<IngredientsDto> ingList, 
     		ArrayList<DirectionsDto> directionList, String timeToCook) {
+
+    	System.out.println("[AddRecipe] validation start");
     	if (recipeName == null || recipeName.isEmpty()) {
     		return true;
     	}
@@ -283,14 +283,14 @@ public class AddRecipe extends HttpServlet {
     	
     	System.out.println("timeToCook ok");
     	
-    	System.out.println("Validation ok");
-    	
+    	System.out.println("[AddRecipe] validation finish");
+
     	return false;
     }
 
 
     public boolean insertIngredients(Connection conn, ArrayList<IngredientsDto> ingList, IngredientsDao ingDao) {
-    	System.out.println("***********[ADDRecipe] insertIngredients run***********");
+    	System.out.println("[ADDRecipe] insertIngredients start");
     	boolean isError = false;
     			
 		try {
@@ -315,6 +315,8 @@ public class AddRecipe extends HttpServlet {
 			isError = true;
 			System.out.println("[AddRecipe--doGet insert ingredients error: " + e.getMessage());
 		}	
+		
+    	System.out.println("[ADDRecipe] insertIngredients finish");
     	return isError;
     }
 
