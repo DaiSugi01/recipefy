@@ -40,7 +40,6 @@ public class AddRecipe extends HttpServlet {
      */
     public AddRecipe() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**

@@ -26,14 +26,12 @@ public class Login extends HttpServlet {
      */
     public Login() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		System.out.println("[login] run");
 		RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
 		rd.forward(request, response);	
@@ -43,7 +41,6 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		DbHandler handler = DbHandler.getInstance();
 		
@@ -66,7 +63,6 @@ public class Login extends HttpServlet {
 			response.sendRedirect("home");
 
 		} else {
-			// go to error
 			RequestDispatcher rd = request.getRequestDispatcher("/login-error.jsp");
 			rd.forward(request, response);	
 		};

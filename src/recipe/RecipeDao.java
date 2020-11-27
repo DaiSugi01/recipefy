@@ -1,9 +1,6 @@
 package recipe;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -12,12 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 
 public class RecipeDao {
 
 	private final Connection conn;
-	private final String CATE_JAPANESE = "Japanese";
 
 	public RecipeDao(Connection conn) {
 		this.conn = conn;

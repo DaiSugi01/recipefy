@@ -3,21 +3,13 @@ package recipe;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Base64;
 
 import javax.imageio.ImageIO;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,9 +24,7 @@ import dbutil.DbHandler;
  */
 @WebServlet("/searchResult")
 public class SearchResult extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	
-	private final String RECIPE_NAME = "recipeName";
+	private static final long serialVersionUID = 1L;	
 	private final String INGREDIENTS = "ingredients";
        
     /**
