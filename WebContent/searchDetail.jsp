@@ -29,13 +29,12 @@
 				</div>
 				<!-- description column -->
 				<div class="flex justify-center items-center">
-					<div class="p-6">
+					<div class="p-6 text-lg">
 						<h1 class="mb-8 text-3xl font-bold"><%= recipe.getRecipeName() %></h1>
-						<p>Created Date: <%= recipe.getCreatedDate() %></p>
-						<p>Category: <%= recipe.getRecipeCategory() %></p>
-						<p>Time: <%= recipe.getTimeToCook() %> mins</p>
-
-						<p>Ingredients:</p>
+						<p><i>Created Date:</i> <%= recipe.getCreatedDate() %></p>
+						<p><i>Category:</i> <%= recipe.getRecipeCategory() %></p>
+						<p><i>Time:</i> <%= recipe.getTimeToCook() %> mins</p>
+						<p><i>Ingredients:</i></p>
 						<div class="ml-6">
 							<ul class="list-disc">
 							<% for (IngredientsDto ing :ings) { 
@@ -46,8 +45,7 @@
 							<% } %>
 							</ul>
 						</div>
-						
-						<p>Directions:</p>
+						<p><i>Directions:</i></p>
 						<div class="ml-6">
 							<ul class="list-decimal">
 							<% for (DirectionsDto dire :dires) {

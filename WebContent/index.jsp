@@ -31,7 +31,6 @@
 				   	%>
 				   	<a href=<%="searchDetail/" + recipe.getRecipeId() %>>
 						<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
-							<!-- <img src="https://source.unsplash.com/1200x800/?thai,curry" class="w-full rounded mb-3"> -->
  							<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
 							<p>Recipe Name: <%= recipe.getRecipeName() %></p>
 							<p>Category: <%= recipe.getRecipeCategory() %></p>
