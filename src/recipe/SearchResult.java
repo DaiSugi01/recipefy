@@ -46,7 +46,7 @@ public class SearchResult extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		System.out.println("[SearchResult -- doGet] run");
-		
+
 		String keyword = request.getParameter("search");
 		DbHandler hander = DbHandler.getInstance();
 		ArrayList<RecipeDto> searchedRecipe = null;
