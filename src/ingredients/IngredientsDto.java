@@ -14,7 +14,6 @@ public class IngredientsDto {
 		setCreatedDate(createdDate);
 	}
 	
-	
 	/**
 	 * @return the createdDate
 	 */
@@ -58,7 +57,6 @@ public class IngredientsDto {
 	public boolean equals(Object obj) {
 		if(obj instanceof IngredientsDto) {
 			IngredientsDto other = (IngredientsDto) obj;
-			//変数ageと変数nameが等しければtrueを返す。(同じ値を持っているとみなす)
 			return other.ingName.equals(this.ingName);
 		}
 		return false;

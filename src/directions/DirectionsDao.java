@@ -20,8 +20,9 @@ public class DirectionsDao {
 	 * get directions data by recipe id
 	 * @param recipeId
 	 * @return directions dto list filtered by given recipe id
+	 * @throws SQLException 
 	 */
-    public ArrayList<DirectionsDto> selectDirectionsByRecipeId(int recipeId) {
+    public ArrayList<DirectionsDto> selectDirectionsByRecipeId(int recipeId) throws SQLException {
     	
     	String query = 
     			"SELECT * FROM Directions WHERE recipe_id = ? ORDER BY dir_id";
@@ -48,15 +49,11 @@ public class DirectionsDao {
         } catch (SQLException e) {
         	System.out.println("[DirectionsDao] selectDirectionsByRecipeId error: " + e.getMessage());
         } finally {
-            try {
-                if(pstmt != null) {
-                    pstmt.close();
-                }
-                if(rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(rs != null) {
+                rs.close();
             }
         }
     	

@@ -53,7 +53,7 @@ public class SearchDetail extends HttpServlet {
 			
 			// get ingredients data
 			IngredientsDao ingDao = new IngredientsDao(handler.getConnection());
-			ings = ingDao.selectIngredients(recipeId);
+			ings = ingDao.selectIngredientsByRecipeId(recipeId);
 			System.out.println("[SearchDetail--doget] selectIngredients run");
 			for (IngredientsDto i : ings) {
 				System.out.println(i.getIngName());

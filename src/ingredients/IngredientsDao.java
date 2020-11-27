@@ -16,7 +16,13 @@ public class IngredientsDao {
 		this.conn = conn;
 	}
 	
-    public ArrayList<IngredientsDto> selectIngredientsbyName(ArrayList<IngredientsDto> ings) {
+	/**
+	 * search ingredients by name
+	 * @param ings
+	 * @return list of ingredients searched by ingredients name
+	 * @throws SQLException 
+	 */
+    public ArrayList<IngredientsDto> selectIngredientsbyName(ArrayList<IngredientsDto> ings) throws SQLException {
     	
     	// make ? for preparedStatement
     	StringBuilder ppsts = new StringBuilder();
@@ -30,6 +36,7 @@ public class IngredientsDao {
     	
     	String query = "SELECT * FROM Ingredients WHERE ing_name in (" + ppsts.toString() + ")";
 
+    	
     	PreparedStatement ppsmt = null;
     	ResultSet rs = null;
     	ArrayList<IngredientsDto> newIngredients = new ArrayList<>();
@@ -45,34 +52,40 @@ public class IngredientsDao {
                 int ingId = rs.getInt("ing_id");
                 String ingName = rs.getString("ing_name");
                 Date createdDate = rs.getDate("created_date");
-    			System.out.println("ing_id:" + ingId + ", ing_name:" + ingName + "craeted_date" + createdDate );
+
+                System.out.println("[IngredientsDao] SQL: " + query + 
+                		", values=ing_id:" + ingId + ", " + ingName + ", " + createdDate );
                 newIngredients.add(new IngredientsDto(ingId, ingName, createdDate));
     		}
     		
     	} catch (SQLException e) {
-    		System.out.println("Select recipe by name error: " + e.getMessage());
+    		System.out.println("[IngredientsDao] Select recipe by name error: " + e.getMessage());
     	} finally {
-    		try {
-    			if(ppsmt != null) {
-    				ppsmt.close();
-    			}
-    			if(rs != null) {
-    				rs.close();
-    			}
-    		} catch (SQLException e) {
-                System.out.println("selectIngredientsbyName error: " + e.getMessage());
-    		}
+
+			if(rs != null) {
+				rs.close();
+			}
+
+			if(ppsmt != null) {
+				ppsmt.close();
+			}
     	}
     	
     	return newIngredients;
     }
     
-    public ArrayList<IngredientsDto> selectIngredients(int recipeId) {
+    /**
+     * select ingredients by recipe id
+     * @param recipeId
+     * @return list of ingredients
+     * @throws SQLException 
+     */
+    public ArrayList<IngredientsDto> selectIngredientsByRecipeId(int recipeId) throws SQLException {
     	String query = 
-    			"SELECT I.ing_id, I.ing_name, I.created_date FROM Ingredients as I "
+    			"SELECT I.* FROM Ingredients as I "
     			+ "INNER JOIN RecipeIngredients as RI on I.ing_id = Ri.ing_id "
     			+ "WHERE RI.recipe_id = ?";
-    	System.out.println("SQL: " + query + ", vallue=" + recipeId);
+    	System.out.println("[IngredientsDao] SQL: " + query + ", vallue=" + recipeId);
 
     	PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -89,26 +102,30 @@ public class IngredientsDao {
                 Date createdDate = rs.getDate("created_date");
                 ingredients.add(new IngredientsDto(ingId, ingName, createdDate));
             }
+            
             System.out.println("[IngredientsDao] selectIngredients done");
 
         } catch (SQLException e) {
             System.out.println("[IngredientsDao] selectIngredients error: " + e.getMessage());
         } finally {
-            try {
-                if(pstmt != null) {
-                    pstmt.close();
-                }
-                if(rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        	if(rs != null) {
+                rs.close();
+            }
+            
+            if(pstmt != null) {
+            	pstmt.close();
             }
         }
     	
     	return ingredients;
     }
     
+    /**
+     * check if ingredients is exists
+     * @param ings
+     * @return list of ingredients
+     * @throws SQLException
+     */
     public ArrayList<IngredientsDto> checkIngredients(ArrayList<IngredientsDto> ings) throws SQLException {
     	
     	// make ? for preparedStatement
@@ -126,10 +143,14 @@ public class IngredientsDao {
     	PreparedStatement ppsmt = null;
     	ResultSet rs = null;
     	ArrayList<IngredientsDto> returnedIngs = new ArrayList<>();
-    	
+
+    	System.out.print("[IngredientsDao] SQL: " + query + ", value=");
+        		
+
     	try {
     		ppsmt = conn.prepareStatement(query);
         	for (int i = 0; i < ings.size(); i++) {
+        		System.out.print(ings.get(i).getIngName() + ", ");
     			ppsmt.setString(i+1, ings.get(i).getIngName());
     		}
     		rs = ppsmt.executeQuery();
@@ -142,46 +163,59 @@ public class IngredientsDao {
     		}
     		
     	} catch (SQLException e) {
-    		System.out.println("Select Ingredients by kewyord error: " + e.getMessage());
+    		System.out.println("[IngredientsDao Select Ingredients by kewyord error: " + e.getMessage());
     	} finally {
-    		try {
-    			if(ppsmt != null) {
-    				ppsmt.close();
-    			}
-    			if(rs != null) {
-    				rs.close();
-    			}
-    		} catch (SQLException e) {
-    			e.printStackTrace();
-    		}
+		
+    		if(rs != null) {
+				rs.close();
+			}
+
+			if(ppsmt != null) {
+				ppsmt.close();
+			}
     	}
     	
     	return returnedIngs;
     }
     
-    public boolean insertIngredients(ArrayList<IngredientsDto> ings){
+    /**
+     * insert ingredients
+     * @param ings
+     * @return 
+     * 		true  : insert success
+     * 		false : insert failed
+     * @throws SQLException 
+     */
+    public boolean insertIngredients(ArrayList<IngredientsDto> ings) throws SQLException {
         PreparedStatement ppst = null;
-        
+        int result = 0;
+
         try{
+        	conn.setAutoCommit(false);
         	
         	String sql = "INSERT INTO Ingredients (ing_name) VALUES (?)";
-            
-            int result = 0;
+        	System.out.println("");
+
             for (IngredientsDto ing : ings) {
                 System.out.println(sql + ", value=" + ing.getIngName());
                 ppst = conn.prepareStatement(sql);
                 ppst.setString(1, ing.getIngName());
                 ppst.executeUpdate();
                 result++;
-                ppst = null;
             }
             
-            return (result == ings.size());
+            conn.commit();
             
-        }catch(Exception e){
-            System.out.println("Insert Ingredients error: " + e.getMessage());
-        }
-        return false;
+        }catch(SQLException e){
+            System.out.println("[IngredientsDao] Insert Ingredients error: " + e.getMessage());
+            conn.rollback();
+        } finally {
+			if (ppst != null) {
+				ppst.close();
+			}
+		}
+        
+        return (result == ings.size());
     }
 
 }

@@ -322,7 +322,7 @@ public class AddRecipe extends HttpServlet {
     	return recipe.getRecipeId();
     }
     
-    public boolean insertdirections(Connection conn, ArrayList<DirectionsDto> directions) {
+    public boolean insertdirections(Connection conn, ArrayList<DirectionsDto> directions) throws SQLException {
     	DirectionsDao directionsDao = new DirectionsDao(conn);
     	return !directionsDao.insertDirections(directions);
     }
