@@ -8,7 +8,7 @@ You can see this application here:  https://recipe-fy.herokuapp.com/home
   * [Built With](#built-with) 
 
 ## About The Recipefy
-On this app, you can choose ingredients and order burger.  
+Recipefy gives you great recipe and you can share your recipe to the world.
 
 ### Built With
 * [Java](https://www.oracle.com/java/)
