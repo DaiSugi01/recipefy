@@ -1,5 +1,5 @@
 # Recipefy
-You can see this application here:  https://recipe-fy.herokuapp.com/home
+You can see this application here:  https://recipe-fy.herokuapp.com
 <img width="1362" alt="Recipefy" src="https://user-images.githubusercontent.com/37020406/100515277-394fa400-31be-11eb-8d23-5d6f3edfd3a5.png">
 
 ## Table of Contents
