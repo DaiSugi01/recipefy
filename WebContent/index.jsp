@@ -22,6 +22,12 @@
 		<div class="w-full flex justify-center items-center">
 			<div class="w-1/2 text-center my-24">
 				<h1 class="text-6xl font-bold">Welcome to Recipefy.</h1>
+				<% if (userDto == null) { %>
+					<button class="bg-transparent hover:bg-red-500 text-xl border rounded p-1 px-2">
+						<a href="signup">Join Us Today!</a>
+					</button>
+				<% } %>		
+			
 				<div>
 					<h1 class="mt-4 mb-8 text-3xl font-bold">Latest Recipes</h1>
 			   		<%
@@ -45,13 +51,6 @@
 					<% } else { %>
 						<p class="my-8">We don't have any recipes yet.</p>						
 					<% } %>
-					
-					<% if (userDto == null) { %>
-						<button class="bg-transparent hover:bg-red-500 text-xl border rounded p-1 px-2">
-							<a href="signup">Join Us Today!</a>
-						</button>
-					<% } %>		
-					
 				</div>
 			</div>
 		</div>
