@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +22,7 @@ import ingredients.IngredientsDto;
 /**
  * Servlet implementation class SearchDetail
  */
-@WebServlet("/searchDetail/*")
+@WebServlet("/searchDetail")
 public class SearchDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -38,15 +39,16 @@ public class SearchDetail extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
 		System.out.println("********** [SearchDetail-doGet] start **********");
-
-		int recipeIdIdx = request.getRequestURI().lastIndexOf("/") + 1;
-		int recipeId = Integer.parseInt(request.getRequestURI().substring(recipeIdIdx));
 		
 		Connection conn = DbHandler.getInstance().getConnection();
 		RecipeDto recipeDto = null;
 		ArrayList<IngredientsDto> ings = new ArrayList<>();
 		ArrayList<DirectionsDto> dires = new ArrayList<>();
-		
+			
+//		int recipeIdIdx = request.getRequestURI().lastIndexOf("/") + 1;
+//		int recipeId = Integer.parseInt(request.getRequestURI().substring(recipeIdIdx));
+		int recipeId = Integer.parseInt(request.getParameter("recipe_id"));
+		System.out.println(recipeId);
 		try {
 			
 			// Get recipe data
@@ -63,24 +65,23 @@ public class SearchDetail extends HttpServlet {
 			DirectionsDao dire = new DirectionsDao(conn);
 			dires = dire.selectDirectionsByRecipeId(recipeId);
 			System.out.println("[SearchDetail--doGet] selectDirectionsByRecipeId run");
-						
+
+
+			HttpSession session = request.getSession();
+			
+			if (session.getAttribute("recipe") != null) {
+				session.removeAttribute("recipe");
+			}
+			
+			session.setAttribute("recipe", recipeDto);
+			session.setAttribute("ings", ings);
+			session.setAttribute("dires", dires);
+
 		} catch (SQLException e) {
 			System.out.println("[SearchDetail--doGet] failed: " + e.getMessage());
-		}		
-		
-		System.out.println("[SearchDetail--doget] finish");
-		HttpSession session = request.getSession();
-		
-		if (session.getAttribute("recipe") != null) {
-			session.removeAttribute("recipe");
 		}
 		
-		session.setAttribute("recipe", recipeDto);
-		session.setAttribute("ings", ings);
-		session.setAttribute("dires", dires);
-
 		response.sendRedirect("searchDetail.jsp");
-		
 		System.out.println("********** [SearchDetail-doGet] finish **********");
 
 	}

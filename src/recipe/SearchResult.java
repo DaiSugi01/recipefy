@@ -45,11 +45,10 @@ public class SearchResult extends HttpServlet {
 		Connection conn = hander.getConnection();
 
 		String keyword = request.getParameter("search");
-		ArrayList<RecipeDto> searchedRecipe = null;
+		ArrayList<RecipeDto> searchedRecipe = new ArrayList<>();
 
 		try {
 			RecipeDao recipe = new RecipeDao(hander.getConnection());
-//			searchedRecipe = recipe.tempSelectRecipesbyKeyword(keyword);
 			
 			String opt = request.getParameter("filter");
 			
@@ -65,10 +64,6 @@ public class SearchResult extends HttpServlet {
 				System.out.println(r.getRecipeName());
 			}
 
-			HttpSession session = request.getSession();
-			session.setAttribute("searchedRecipes", searchedRecipe);
-			response.sendRedirect("searchResult.jsp");
-
 		} catch (SQLException e) {
 			System.out.println("[SearchResult--doget] failed: " + e.getMessage());
 		} finally {
@@ -80,8 +75,12 @@ public class SearchResult extends HttpServlet {
 					e.printStackTrace();
 				}				
 			}
-		}		
+		}
+		
 		System.out.println("********** [SearchResult--doGet] done **********");
+		HttpSession session = request.getSession();
+		session.setAttribute("searchedRecipes", searchedRecipe);
+		response.sendRedirect("searchResult.jsp");
 	}
 
 	/**
