@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,8 +44,6 @@ public class SearchDetail extends HttpServlet {
 		ArrayList<IngredientsDto> ings = new ArrayList<>();
 		ArrayList<DirectionsDto> dires = new ArrayList<>();
 			
-//		int recipeIdIdx = request.getRequestURI().lastIndexOf("/") + 1;
-//		int recipeId = Integer.parseInt(request.getRequestURI().substring(recipeIdIdx));
 		int recipeId = Integer.parseInt(request.getParameter("recipe_id"));
 		System.out.println(recipeId);
 		try {
