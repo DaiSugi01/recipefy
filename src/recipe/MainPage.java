@@ -58,7 +58,7 @@ public class MainPage extends HttpServlet {
 
 		request.setAttribute("recipes", recipes);
 
-		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("main-page.jsp");
 		rd.forward(request, response);
 
 		System.out.println("********** [MainPage-doGet] finish **********");
