@@ -1,6 +1,5 @@
 package recipe;
 
-import java.awt.image.BufferedImage;
 import java.sql.Date;
 
 public class RecipeDto {

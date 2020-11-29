@@ -35,14 +35,12 @@ public class ImageServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("[ImageSevlet--doget] run");
+		System.out.println("********** [ImageSevlet-doGet] start **********");
 
 		HttpSession session = request.getSession();
 		
 		if (session.getAttribute("recipe") != null) {			
 			RecipeDto recipeDto = (RecipeDto) session.getAttribute("recipe");
-			System.out.println("AWFEAWFEWAFAWEF" + recipeDto);
-			System.out.println(recipeDto.getRecipeName());
 			
 			InputStream inputStream = new ByteArrayInputStream(recipeDto.getRecipeImage());
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
@@ -52,12 +50,14 @@ public class ImageServlet extends HttpServlet {
 			OutputStream outputStream = response.getOutputStream();
 			ImageIO.write(img, "png", outputStream);
 			outputStream.flush();
-			System.out.println("[ImageSevlet--doget] finish");
+
 			session.removeAttribute("recipe");
+			
 		} else {
-			System.out.println("[ImageSErvlet] Session is null");
+			System.out.println("[ImageSErvlet] Session(recipe) is null");
 		}
 
+		System.out.println("********** [ImageSevlet-doGet] finish **********");
 	}
 
 	/**

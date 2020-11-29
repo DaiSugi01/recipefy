@@ -1,6 +1,8 @@
 package signup;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,57 +26,88 @@ public class Signup extends HttpServlet {
      */
     public Signup() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("[Signup-doget] run");
+		System.out.println("********** [Signup-doGet] start **********");
 		RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
 		rd.forward(request, response);
+		System.out.println("********** [Signup-doGet] finish **********");
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("[Signup-doPost] run");
+
+		System.out.println("********** [Signup-doPost] start **********");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		DbHandler handler = DbHandler.getInstance();
-		
-		System.out.println("Success!");
-		
+
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 	
-		System.out.println(firstName);
-		System.out.println(lastName);
-		System.out.println(email);
-		System.out.println(password);
+		Connection conn = DbHandler.getInstance().getConnection();
+		boolean isError = false;
+
+		try {
+			
+			if (!isEmpty(firstName, lastName, email, password)) {
+
+				UserDao user = new UserDao(conn);
+				
+				// Check if user is exists
+				if (user.selectUserCount(firstName, lastName, email, password)) {
+					isError = true;
+				}
+				
+				// Insert user
+				if (!isError) {
+					if (!user.insertUser(firstName, lastName, email, password)){
+						isError = true;
+					}
+				}
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("[Signup--diPost] error: " + e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					System.out.println("[Signup] connection close error: " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
 		
-		if (isEmpty(firstName, lastName, email, password)) {
+		
+		if (isError) {
 			RequestDispatcher rd = request.getRequestDispatcher("/signup-error.jsp");
 			rd.forward(request, response);
 		} else {
-			
-			UserDao user = new UserDao(handler.getConnection());
-			
-			if (user.insertUser(firstName, lastName, email, password)) {
-				response.sendRedirect("login");
-			} else {
-				// error
-				RequestDispatcher rd = request.getRequestDispatcher("/signup-error.jsp");
-				rd.forward(request, response);
-			}
+			response.sendRedirect("login");
 		}
 	
+		System.out.println("********** [Signup-doPost] finish **********");
 	}
 
 	
+	/**
+	 * validation check
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param password
+	 * @return
+	 * 		true  : validation passed
+	 * 		false : validation failed
+	 */
 	public boolean isEmpty(String firstName, String lastName, String email, String password) {
 		
 		if (firstName == null || firstName.isEmpty()) {

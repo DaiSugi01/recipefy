@@ -1,13 +1,10 @@
 package ingredients;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import directions.DirectionsDto;
 
 public class RecipeIngredientsDao {
 
@@ -17,31 +14,46 @@ public class RecipeIngredientsDao {
 		this.conn = conn;
 	}
 
-    public boolean insertRecipeIngredients(int recipeId, ArrayList<IngredientsDto> ings){
-        PreparedStatement ppst = null;
+	/**
+	 * Insert RecipeIngredients
+	 * @param recipeId
+	 * @param ings
+	 * @return
+     * 		true  : insert success
+     * 		false : insert failed
+	 * @throws SQLException 
+	 */
+    public boolean insertRecipeIngredients(int recipeId, ArrayList<IngredientsDto> ings) throws SQLException{
+    	
+    	String sql = "INSERT INTO RecipeIngredients (recipe_id, ing_id) VALUES (?,?)";
+        int result = 0;
+
+    	PreparedStatement ppst = null;
         
         try{
-        	
-        	String sql = "INSERT INTO RecipeIngredients (recipe_id, ing_id) VALUES (?,?)";
-            
-            int result = 0;
+        	conn.setAutoCommit(false);
             for (IngredientsDto ing : ings) {
-                System.out.println(sql + ", value=" + recipeId + ", " +ing.getIngName());
+                System.out.println("[RecipeIngredientsDao] SQL: " + sql + ", value=" + recipeId + ", " +ing.getIngName());
                 ppst = conn.prepareStatement(sql);
                 ppst.setInt(1, recipeId);
                 ppst.setInt(2, ing.getIngId());
                 ppst.executeUpdate();
                 result++;
-                ppst = null;
             }
             
-            return (result == ings.size());
+            conn.commit();
             
-        }catch(Exception e){
+        } catch(SQLException e) {
             System.out.println("Insert Recipe error: " + e.getMessage());
-        }
-        return false;
+            conn.rollback();
+        } finally {
+			
+        	if (ppst != null) {
+        		ppst.close();
+        	}
+		}
+        
+        return (result == ings.size());
     }
     
-
 }

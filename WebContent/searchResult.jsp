@@ -30,21 +30,22 @@
  					<% 
 			   			if (searchedRecipeList != null && searchedRecipeList.size() > 0) {			   			
  							for (int i = 0; i < searchedRecipeList.size(); i++) {
-								System.out.println("JSP run");
 								session.setAttribute("recipe", searchedRecipeList.get(i));
 				   				String recipeNameWithComma = searchedRecipeList.get(i).getRecipeName().trim().replaceAll(" ", ",");
 					%>
 
-						<a href=<%="searchDetail/" + searchedRecipeList.get(i).getRecipeId() %>>
-
-							<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
-		 						<!-- <img src="getImage" alt="image" class="w-full rounded mb-3"> -->
-		 						<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
-		 						<p>Recipe Name: <%= searchedRecipeList.get(i).getRecipeName() %></p>
-		 						<p>Category: <%= searchedRecipeList.get(i).getRecipeCategory() %></p>
-		 						<p>Time: <%= searchedRecipeList.get(i).getTimeToCook() %></p>
-							</div>
-						</a>
+					   	<form action="searchDetail">
+							<button>
+						   		<input type="hidden" name="recipe_id" value=<%= searchedRecipeList.get(i).getRecipeId() %>>
+								<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
+			 						<!-- <img src="getImage" alt="image" class="w-full rounded mb-3"> -->
+			 						<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
+			 						<p>Recipe Name: <%= searchedRecipeList.get(i).getRecipeName() %></p>
+			 						<p>Category: <%= searchedRecipeList.get(i).getRecipeCategory() %></p>
+			 						<p>Time: <%= searchedRecipeList.get(i).getTimeToCook() %></p>
+								</div>
+							</button>					   	
+					   	</form>
 						<% 
 							} 
 						%>

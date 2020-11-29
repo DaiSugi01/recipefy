@@ -8,8 +8,6 @@ public class UserDto {
 	private String email;
 	private String password;
 	
-	//constructor
-	
 	public UserDto(int id, String firstName, String lastName, String email, String password) {
 		setId(id);
 		setFirstName(firstName);
@@ -17,10 +15,6 @@ public class UserDto {
 		setEmail(email);
 		setPassword(password);
 	}
-	
-	
-	//getter
-	//setter
 	
 	/*
 	 * @return id

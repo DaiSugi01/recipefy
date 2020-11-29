@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import ingredients.IngredientsDto;
 
 public class DirectionsDao {
 
@@ -17,10 +16,18 @@ public class DirectionsDao {
 		this.conn = conn;
 	}
 	
-    public ArrayList<DirectionsDto> selectDirectionsByRecipeId(int recipeId) {
+	/**
+	 * get directions data by recipe id
+	 * @param recipeId
+	 * @return directions dto list filtered by given recipe id
+	 * @throws SQLException 
+	 */
+    public ArrayList<DirectionsDto> selectDirectionsByRecipeId(int recipeId) throws SQLException {
+    	
     	String query = 
     			"SELECT * FROM Directions WHERE recipe_id = ? ORDER BY dir_id";
-    	System.out.println("SQL" + ": " + query + ", value=" + recipeId);
+    	System.out.println("[DirectionsDao] SQL: " + query + ", value=" + recipeId);
+    	
     	PreparedStatement pstmt = null;
         ResultSet rs = null;
         ArrayList<DirectionsDto> directions = new ArrayList<>();
@@ -42,46 +49,56 @@ public class DirectionsDao {
         } catch (SQLException e) {
         	System.out.println("[DirectionsDao] selectDirectionsByRecipeId error: " + e.getMessage());
         } finally {
-            try {
-                if(pstmt != null) {
-                    pstmt.close();
-                }
-                if(rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if(pstmt != null) {
+                pstmt.close();
+            }
+            if(rs != null) {
+                rs.close();
             }
         }
     	
     	return directions;
     }
     
-    public boolean insertDirections(ArrayList<DirectionsDto> directions){
-        PreparedStatement ppst = null;
+    
+    /**
+     * insert directions data
+     * @param directions
+     * @return 
+     * 		true  : insert success
+     * 		false : insert failed
+     * @throws SQLException 
+     */
+    public boolean insertDirections(ArrayList<DirectionsDto> directions) throws SQLException{
+
+    	PreparedStatement ppst = null;
+        int result = 0;
         
         try{
-        	
+        	conn.setAutoCommit(false);
         	String sql = "INSERT INTO Directions (direction, recipe_id) VALUES (?, ?)";
             
-            int result = 0;
             for (DirectionsDto direction : directions) {
-                System.out.println(sql + ", value=" + direction.getDirection() + ", " + direction.getRecipeId());
+                System.out.println("[DirectionsDao] SQL: " + sql + ", value=" + direction.getDirection() + ", " + direction.getRecipeId());
                 ppst = conn.prepareStatement(sql);
                 ppst.setString(1, direction.getDirection());
                 ppst.setInt(2, direction.getRecipeId());
                 ppst.executeUpdate();
                 result++;
-                ppst = null;
             }
             
             System.out.println("[DirectionsDao] insertDirections done");
-            return (result == directions.size());
+            conn.commit();
             
         }catch(Exception e){
         	System.out.println("[DirectionsDao] insertDirections error: " + e.getMessage());
-        }
-        return false;
+        	conn.rollback();
+        } finally {
+			if (ppst != null) {
+				ppst.close();
+			}
+		}
+        return (result == directions.size());
     }
     
     

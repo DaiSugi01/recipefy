@@ -1,10 +1,10 @@
 package recipe;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +21,7 @@ import ingredients.IngredientsDto;
 /**
  * Servlet implementation class SearchDetail
  */
-@WebServlet("/searchDetail/*")
+@WebServlet("/searchDetail")
 public class SearchDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -30,7 +30,6 @@ public class SearchDetail extends HttpServlet {
      */
     public SearchDetail() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -38,59 +37,56 @@ public class SearchDetail extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
-		System.out.println("[SearchDetail--doget] run");
-		int recipeIdIdx = request.getRequestURI().lastIndexOf("/") + 1;
-		int recipeId = Integer.parseInt(request.getRequestURI().substring(recipeIdIdx));
+		System.out.println("********** [SearchDetail-doGet] start **********");
+		
+		Connection conn = DbHandler.getInstance().getConnection();
 		RecipeDto recipeDto = null;
 		ArrayList<IngredientsDto> ings = new ArrayList<>();
 		ArrayList<DirectionsDto> dires = new ArrayList<>();
-		
+			
+		int recipeId = Integer.parseInt(request.getParameter("recipe_id"));
+		System.out.println(recipeId);
 		try {
-			DbHandler handler = DbHandler.getInstance();
 			
-			// get recipe data
-			RecipeDao recipe = new RecipeDao(handler.getConnection());
+			// Get recipe data
+			RecipeDao recipe = new RecipeDao(conn);
 			recipeDto = recipe.selectRecipebyRecipeId(recipeId);
-			System.out.println("[SearchDetail--doget] selectRecipebyRecipeId run");
+			System.out.println("[SearchDetail--doGet] selectRecipebyRecipeId run");
 			
-			// get ingredients data
-			IngredientsDao ingDao = new IngredientsDao(handler.getConnection());
-			ings = ingDao.selectIngredients(recipeId);
-			System.out.println("[SearchDetail--doget] selectIngredients run");
-			for (IngredientsDto i : ings) {
-				System.out.println(i.getIngName());
-			}
+			// Get ingredients data
+			IngredientsDao ingDao = new IngredientsDao(conn);
+			ings = ingDao.selectIngredientsByRecipeId(recipeId);
+			System.out.println("[SearchDetail--doGet] selectIngredients run");
 			
-			// get direction data
-			DirectionsDao dire = new DirectionsDao(handler.getConnection());
+			// Get direction data
+			DirectionsDao dire = new DirectionsDao(conn);
 			dires = dire.selectDirectionsByRecipeId(recipeId);
-			System.out.println("[SearchDetail--doget] selectDirectionsByRecipeId run");
+			System.out.println("[SearchDetail--doGet] selectDirectionsByRecipeId run");
+
+
+			HttpSession session = request.getSession();
 			
-			for (DirectionsDto d : dires) {
-				System.out.println(d.getDirection());
+			if (session.getAttribute("recipe") != null) {
+				session.removeAttribute("recipe");
 			}
 			
-		} catch (SQLException e) {
-			System.out.println("[SearchDetail--doget] failed: " + e.getMessage());
-		}		
-		
-		System.out.println("[SearchDetail--doget] finish");
-		HttpSession session = request.getSession();
-		if (session.getAttribute("recipe") != null) {
-			session.removeAttribute("recipe");
-		}
-		session.setAttribute("recipe", recipeDto);
-		session.setAttribute("ings", ings);
-		session.setAttribute("dires", dires);
+			session.setAttribute("recipe", recipeDto);
+			session.setAttribute("ings", ings);
+			session.setAttribute("dires", dires);
 
-		response.sendRedirect("/java-group-project/searchDetail.jsp");
+		} catch (SQLException e) {
+			System.out.println("[SearchDetail--doGet] failed: " + e.getMessage());
+		}
+		
+		response.sendRedirect("searchDetail.jsp");
+		System.out.println("********** [SearchDetail-doGet] finish **********");
+
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
