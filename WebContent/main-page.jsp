@@ -23,10 +23,10 @@
 			<div class="w-1/2 text-center my-24">
 				<h1 class="text-6xl font-bold">Welcome to Recipefy.</h1>
 				<% if (userDto == null) { %>
-					<button class="bg-transparent hover:bg-red-500 text-xl border rounded p-1 px-2">
+					<button class="bg-transparent hover:bg-red-500 text-xl border rounded p-1 px-2 mt-6">
 						<a href="signup">Join Us Today!</a>
 					</button>
-				<% } %>		
+				<% } %>
 			
 				<div>
 					<h1 class="mt-4 mb-8 text-3xl font-bold">Latest Recipes</h1>
@@ -39,7 +39,6 @@
 							   		<button>
 								   		<input type="hidden" name="recipe_id" value=<%= recipe.getRecipeId() %>>
 										<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
-											<!-- <img src="https://source.unsplash.com/1200x800/?thai,curry" class="w-full rounded mb-3"> -->
 				 							<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
 											<p>Recipe Name: <%= recipe.getRecipeName() %></p>
 											<p>Category: <%= recipe.getRecipeCategory() %></p>
@@ -49,7 +48,7 @@
 							   	</form>
 							<% } %>
 					<% } else { %>
-						<p class="my-8">We don't have any recipes yet.</p>						
+						<p class="mt-2">We don't have any recipes yet.</p>						
 					<% } %>
 				</div>
 			</div>

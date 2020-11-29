@@ -8,7 +8,7 @@
 	<header class="w-full bg-gray-900 bg-opacity-50 p-4 fixed">
 		<nav class="flex justify-between items-center px-4">
 			<div class="flex">
-				<form action="searchResult" class="flex">			
+				<form action="searchResult" class="flex">		
 					<select name="filter" class="text-gray-500 rounded p-1 mr-2">
 						<option value="">--Search Options--</option>	
 						<option value="recipeName">Recipe Name</option>
