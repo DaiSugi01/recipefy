@@ -40,9 +40,9 @@
 								   		<input type="hidden" name="recipe_id" value=<%= recipe.getRecipeId() %>>
 										<div class="bg-white bg-opacity-30 rounded p-6 shadow-md hover:bg-opacity-40">
 				 							<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
-											<p><i>Recipe Name:<i> <%= recipe.getRecipeName() %></p>
-											<p><i>Category:<i> <%= recipe.getRecipeCategory() %></p>
-											<p><i>Time:<i> <%= recipe.getTimeToCook() %> mins</p>
+											<p><i>Recipe Name:</i> <%= recipe.getRecipeName() %></p>
+											<p><i>Category:</i> <%= recipe.getRecipeCategory() %></p>
+											<p><i>Time:</i> <%= recipe.getTimeToCook() %> mins</p>
 										</div>
 									</button>
 							   	</form>

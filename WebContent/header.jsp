@@ -6,9 +6,9 @@
 %>
 	
     <header>
-        <nav class="w-full flex flex-wrap items-center justify-between bg-gray-900 bg-opacity-50 p-4 fixed top-0">
+        <nav class="w-full flex flex-wrap items-center justify-between bg-gray-900 bg-opacity-50 p-4 fixed">
             <div class="flex items-center flex-shrink-0">
-				<form action="searchResult" class="flex">			
+				<form action="searchResult" class="flex text-sm md:text-base">			
 					<select name="filter" class="w-full text-gray-500 rounded p-1 mr-2">
 						<option value="">--Search Options--</option>	
 						<option value="recipeName">Recipe Name</option>

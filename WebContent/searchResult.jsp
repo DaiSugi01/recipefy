@@ -35,14 +35,13 @@
 					%>
 
 					   	<form action="searchDetail">
-							<button>
+							<button class="mb-6">
 						   		<input type="hidden" name="recipe_id" value=<%= searchedRecipeList.get(i).getRecipeId() %>>
-								<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
-			 						<!-- <img src="getImage" alt="image" class="w-full rounded mb-3"> -->
+								<div class="bg-white bg-opacity-30 rounded p-6 shadow-md hover:bg-opacity-40">
 			 						<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
-			 						<p>Recipe Name: <%= searchedRecipeList.get(i).getRecipeName() %></p>
-			 						<p>Category: <%= searchedRecipeList.get(i).getRecipeCategory() %></p>
-			 						<p>Time: <%= searchedRecipeList.get(i).getTimeToCook() %></p>
+			 						<p><i>Recipe Name:</i> <%= searchedRecipeList.get(i).getRecipeName() %></p>
+			 						<p><i>Category:</i> <%= searchedRecipeList.get(i).getRecipeCategory() %></p>
+			 						<p><i>Time:</i> <%= searchedRecipeList.get(i).getTimeToCook() %></p>
 								</div>
 							</button>					   	
 					   	</form>
