@@ -22,10 +22,10 @@
 	<jsp:include page="common-title.jsp" flush="true" />
 	<jsp:include page="header.jsp" flush="true" />
 		
-	<div class="w-screen">
-		<div class="w-full flex justify-center items-center">
-			<div class="w-1/2 text-center mt-24">
-				<h1 class="mt-4 mb-8 text-3xl font-bold">Search Result</h1>
+	<div class="w-screen min-h-screen">
+		<div class="w-full min-h-screen flex justify-center items-center">
+			<div class="w-3/4 lg:w-1/2 text-center mt-32 mb-16">
+				<h1 class="mb-10 text-3xl font-bold">Search Result</h1>
 				<div>
  					<% 
 			   			if (searchedRecipeList != null && searchedRecipeList.size() > 0) {			   			
@@ -57,6 +57,8 @@
 			</div>
 		</div>
 	</div>
+	
+	<jsp:include page="footer.jsp" flush="true" />
 	
 </body>
 	

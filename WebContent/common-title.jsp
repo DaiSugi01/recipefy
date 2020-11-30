@@ -4,4 +4,4 @@
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <title>Recipefy</title>
 
-<body class="bg-cover bg-center bg-no-repeat bg-fixed text-white" style="background-image: url(img/top.jpg)">
+<body class="bg-gray-700 bg-cover bg-center bg-no-repeat bg-fixed text-white" style="background-image: url(img/top.jpg)">

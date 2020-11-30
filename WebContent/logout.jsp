@@ -9,10 +9,11 @@
 		
 	<div class="w-screen h-screen">
 		<div class="w-full h-full flex justify-center items-center">
-			<h1 class="my-4 text-3xl font-bold">See you again!</h1>
+			<h1 class="text-3xl font-bold">See you again!</h1>
 		</div>
 	</div>
 	
-</body>
+	<jsp:include page="footer.jsp" flush="true" />
+
 </body>
 </html>

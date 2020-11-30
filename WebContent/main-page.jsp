@@ -17,43 +17,45 @@
 
 	<jsp:include page="common-title.jsp" flush="true" />
 	<jsp:include page="header.jsp" flush="true" />
-		
-	<div class="w-screen">
-		<div class="w-full flex justify-center items-center">
-			<div class="w-1/2 text-center my-24">
+	
+	<div class="w-screen min-h-screen">
+		<div class="w-full min-h-screen flex justify-center items-center">
+			<div class="w-3/4 lg:w-1/2 text-center mt-32 mb-16">
 				<h1 class="text-6xl font-bold">Welcome to Recipefy.</h1>
 				<% if (userDto == null) { %>
-					<button class="bg-transparent hover:bg-red-500 text-xl border rounded p-1 px-2 mt-6">
+					<button class="bg-transparent hover:bg-red-500 text-2xl border rounded py-2 px-4 mt-10">
 						<a href="signup">Join Us Today!</a>
 					</button>
 				<% } %>
 			
 				<div>
-					<h1 class="mt-4 mb-8 text-3xl font-bold">Latest Recipes</h1>
+					<h1 class="mt-8 mb-10 text-3xl font-bold">Latest Recipes</h1>
 			   		<%
 			   			if (latestRecipeList != null && latestRecipeList.size() > 0) {			   			
 				   			for (RecipeDto recipe : latestRecipeList) {
 				   				String recipeNameWithComma = recipe.getRecipeName().trim().replaceAll(" ", ",");
 				   	%>
 							   	<form action="searchDetail">
-							   		<button>
+							   		<button class="mb-6">
 								   		<input type="hidden" name="recipe_id" value=<%= recipe.getRecipeId() %>>
-										<div class="bg-white bg-opacity-30 rounded p-6 mb-6 shadow-md hover:bg-opacity-40">
+										<div class="bg-white bg-opacity-30 rounded p-6 shadow-md hover:bg-opacity-40">
 				 							<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
-											<p>Recipe Name: <%= recipe.getRecipeName() %></p>
-											<p>Category: <%= recipe.getRecipeCategory() %></p>
-											<p>Time: <%= recipe.getTimeToCook() %> mins</p>
+											<p><i>Recipe Name:<i> <%= recipe.getRecipeName() %></p>
+											<p><i>Category:<i> <%= recipe.getRecipeCategory() %></p>
+											<p><i>Time:<i> <%= recipe.getTimeToCook() %> mins</p>
 										</div>
 									</button>
 							   	</form>
 							<% } %>
 					<% } else { %>
-						<p class="mt-2">We don't have any recipes yet.</p>						
+						<p>We don't have any recipes yet.</p>						
 					<% } %>
 				</div>
 			</div>
 		</div>
 	</div>
+	
+	<jsp:include page="footer.jsp" flush="true" />
 	
 </body>
 

@@ -2,12 +2,12 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title>Recipefy</title>
 	</head>
 	
 	<jsp:forward page="home" />
-	
 
 </html>

@@ -1,6 +1,4 @@
-/*
- * preview recipe image 
- */
+// preview recipe image 
 
 	function previewFile(file) {
 		  const preview = document.getElementById('preview');
@@ -25,3 +23,10 @@
 		  }
 		}
 		fileInput.addEventListener('change', handleFileSelect);
+
+
+// Javascript to toggle the menu
+
+		document.getElementById('nav-toggle').onclick = function(){
+			document.getElementById("nav-content").classList.toggle("hidden");
+		}

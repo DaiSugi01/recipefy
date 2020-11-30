@@ -20,22 +20,23 @@
 	<jsp:include page="common-title.jsp" flush="true" />
 	<jsp:include page="header.jsp" flush="true" />
 		
-	<div class="w-screen h-screen">
-		<div class="w-full h-full flex justify-center items-center">
-			<div class="w-2/3 h-2/3 grid grid-cols-2 bg-white bg-opacity-30 rounded shadow-md mt-20 p-6">
+	<div class="w-screen min-h-screen">
+		<div class="w-full min-h-screen flex justify-center items-center">
+			<div class="w-3/4 h-full lg:h-2/3 grid grid-cols-1 lg:grid-cols-2 bg-white bg-opacity-30 rounded shadow-md mt-32 mb-16 p-6">
 				
 				<!-- image column -->	
-				<div class="h-full bg-cover bg-center bg-no-repeat rounded" style="background-image: url(getImage)">
+				<div class="flex justify-center items-center">
+					<img src="getImage" class="w-full rounded">
 				</div>
 				<!-- description column -->
 				<div class="flex justify-center items-center">
 					<div class="p-6 text-lg">
 						<h1 class="mb-8 text-3xl font-bold"><%= recipe.getRecipeName() %></h1>
-						<p><i>Created Date:</i> <%= recipe.getCreatedDate() %></p>
-						<p><i>Category:</i> <%= recipe.getRecipeCategory() %></p>
-						<p><i>Time:</i> <%= recipe.getTimeToCook() %> mins</p>
+						<p class="mb-1"><i>Created Date:</i> <%= recipe.getCreatedDate() %></p>
+						<p class="mb-1"><i>Category:</i> <%= recipe.getRecipeCategory() %></p>
+						<p class="mb-1"><i>Time:</i> <%= recipe.getTimeToCook() %> mins</p>
 						<p><i>Ingredients:</i></p>
-						<div class="ml-6">
+						<div class="ml-6 mb-1">
 							<ul class="list-disc">
 							<% for (IngredientsDto ing :ings) { 
 								if(!ing.getIngName().isEmpty()) {
@@ -57,11 +58,12 @@
 							</ul>
 						</div>
 					</div>
-				</div>
-				
+				</div>	
 			</div>
 		</div>	
 	</div>
-
+	
+	<jsp:include page="footer.jsp" flush="true" />
+	
 </body>
 </html>

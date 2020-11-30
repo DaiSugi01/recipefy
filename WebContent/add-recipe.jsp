@@ -8,9 +8,9 @@
 	<jsp:include page="common-title.jsp" flush="true" />
 	<jsp:include page="header.jsp" flush="true" />
 
-	<div class="w-screen">
-		<div class="w-full flex justify-center items-center">
-        	<form action="addRecipe" method="POST" class="w-1/3 my-24" enctype="multipart/form-data">
+	<div class="w-screen min-h-screen">
+		<div class="w-full min-h-screen flex justify-center items-center">
+        	<form action="addRecipe" method="POST" class="w-3/4 lg:w-1/3 my-24" enctype="multipart/form-data">
 	        	<h1 class="my-4 text-3xl font-bold">Add Your Recipe</h1>
 			  	<label for="recipeName" class="text-xl">Recipe Name</label><br>
 			  	<input type="text" name="recipeName" class="w-full text-gray-500 rounded p-1 my-2" required><br>	
@@ -42,16 +42,43 @@
 			  	<label for="times" class="text-xl">Time</label><br>
 			  	<select name="times" class="w-full text-gray-500 rounded p-1 my-2" required>
 					<option value="">--Please choose an option--</option>
-					<option value="0 - 30 ">0 - 30 min</option>
-					<option value="30 - 60">30 - 60 min</option>
-					<option value="more than 60">more than 60 min</option>
+					<option value="0 - 30 ">0 - 30 mins</option>
+					<option value="30 - 60">30 - 60 mins</option>
+					<option value="more than 60">more than 60 mins</option>
 				</select>
 			  	<input type="submit" value="Add Recipe" class="bg-transparent hover:bg-red-500 border rounded p-1 px-2 my-2"><br>
 			</form>
          </div>
 	</div>
 	
-	<script src="/java-group-project/js/script.js"></script>
+	<jsp:include page="footer.jsp" flush="true" />
+	
+	<script>
+		/* preview recipe image */ 
+		function previewFile(file) {
+			  const preview = document.getElementById('preview');
+
+			  const reader = new FileReader();
+
+			  reader.onload = function (e) {
+			    const imageUrl = e.target.result;
+			    const img = document.createElement("img");
+			    img.src = imageUrl;
+			    preview.appendChild(img);
+			  }
+
+			  reader.readAsDataURL(file);
+			}
+
+			const fileInput = document.getElementById('example');
+			const handleFileSelect = () => {
+			  const files = fileInput.files;
+			  for (let i = 0; i < files.length; i++) {
+			    previewFile(files[i]);
+			  }
+			}
+			fileInput.addEventListener('change', handleFileSelect);
+	</script>
 	
 </body>
 </html>
