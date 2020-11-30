@@ -36,9 +36,9 @@
 				   				String recipeNameWithComma = recipe.getRecipeName().trim().replaceAll(" ", ",");
 				   	%>
 							   	<form action="searchDetail">
-							   		<button class="mb-6">
+							   		<button class="mb-10">
 								   		<input type="hidden" name="recipe_id" value=<%= recipe.getRecipeId() %>>
-										<div class="bg-white bg-opacity-30 rounded p-6 shadow-md hover:bg-opacity-40">
+										<div class="bg-white bg-opacity-30 rounded p-6 shadow-md transform duration-700 ease-linear hover:scale-105 hover:bg-opacity-40">
 				 							<img src=<%= URL + recipeNameWithComma.toLowerCase() %> class="w-full rounded mb-3">
 											<p><i>Recipe Name:</i> <%= recipe.getRecipeName() %></p>
 											<p><i>Category:</i> <%= recipe.getRecipeCategory() %></p>
