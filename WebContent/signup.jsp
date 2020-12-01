@@ -19,7 +19,7 @@
 			  	<label for="email" class="text-xl">Email</label><br>
 			  	<input type="email" name="email" class="w-full text-gray-500 rounded p-1 my-2" required><br>
 			  	<label for="password" class="text-xl">Password</label><br>
-			  	<input type="password" name="password" class="w-full text-gray-500 rounded p-1 my-2" required>
+			  	<input type="password" minlength="8" name="password" class="w-full text-gray-500 rounded p-1 my-2" required>
 			  	<input type="submit" value="Sign Up" class="bg-transparent hover:bg-red-500 border rounded p-1 px-2 my-2">
 			</form>
          </div>
